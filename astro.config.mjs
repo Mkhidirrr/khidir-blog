@@ -10,6 +10,8 @@ import compress from 'astro-compress';
 
 export default defineConfig({
   site: 'https://khidir.dev',
+  output: 'static',
+  adapter: vercel(),
   integrations: [
     mdx({
       rehypePlugins: [
