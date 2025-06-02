@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+
+const ctfs = await getCollection('ctf');
+const solvedByMonth = ctfs
+  .filter(ctf => ctf.data.solved)
+  .reduce((acc, ctf) => {
+    const date = new Date(ctf.data.date);
+    const key = `${date.getFullYear()}-${date.getMonth() + 1}`;
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
+---
+
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+  <h3 class="text-lg font-semibold mb-4">Solving Progress</h3>
+  <canvas id="progressChart" height="200"></canvas>
+</div>
+
+<script>
+  import Chart from 'chart.js/auto';
+  
+  const ctx = document.getElementById('progressChart');
+  const data = JSON.parse(document.getElementById('chart-data').textContent);
+  
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: Object.keys(data),
+      datasets: [{
+        label: 'Challenges Solved',
+        data: Object.values(data),
+        borderColor: '#3b82f6',
+        tension: 0.1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1
+          }
+        }
+      }
+    }
+  });
+</script>

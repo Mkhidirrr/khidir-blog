@@ -1,0 +1,34 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import TagList from '../components/TagList.astro';
+
+const { frontmatter } = Astro.props;
+---
+
+<BaseLayout title={frontmatter.title} description={frontmatter.description}>
+  <article class="container mx-auto px-4 py-8 max-w-4xl">
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold mb-4">{frontmatter.title}</h1>
+      <div class="flex items-center gap-4 text-gray-600 dark:text-gray-400 mb-4">
+        <time datetime={frontmatter.date}>
+          {new Date(frontmatter.date).toLocaleDateString()}
+        </time>
+        {frontmatter.platform && (
+          <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">
+            {frontmatter.platform}
+          </span>
+        )}
+        {frontmatter.difficulty && (
+          <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">
+            {frontmatter.difficulty}
+          </span>
+        )}
+      </div>
+      <TagList tags={frontmatter.tags} />
+    </header>
+    
+    <div class="prose dark:prose-invert max-w-none">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

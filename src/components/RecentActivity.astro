@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+
+const ctfs = await getCollection('ctf');
+const recentSolved = ctfs
+  .filter(ctf => ctf.data.solved)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 5);
+---
+
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+  <h3 class="text-lg font-semibold mb-4">Recent Solves</h3>
+  <div class="space-y-4">
+    {recentSolved.map(ctf => (
+      <div class="flex justify-between items-center p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded">
+        <div>
+          <h4 class="font-medium">{ctf.data.title}</h4>
+          <p class="text-sm text-gray-500">{ctf.data.platform} • {ctf.data.difficulty}</p>
+        </div>
+        <time class="text-sm text-gray-500">
+          {new Date(ctf.data.date).toLocaleDateString()}
+        </time>
+      </div>
+    ))}
+  </div>
+</div>

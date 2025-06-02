@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+
+const ctfs = await getCollection('ctf');
+
+const stats = {
+  total: ctfs.length,
+  solved: ctfs.filter(ctf => ctf.data.solved).length,
+  byPlatform: {
+    HTB: ctfs.filter(ctf => ctf.data.platform === 'HTB').length,
+    THM: ctfs.filter(ctf => ctf.data.platform === 'THM').length,
+    PicoCTF: ctfs.filter(ctf => ctf.data.platform === 'PicoCTF').length,
+    OverTheWire: ctfs.filter(ctf => ctf.data.platform === 'OverTheWire').length,
+    RootMe: ctfs.filter(ctf => ctf.data.platform === 'RootMe').length
+  },
+  byDifficulty: {
+    Easy: ctfs.filter(ctf => ctf.data.difficulty === 'Easy').length,
+    Medium: ctfs.filter(ctf => ctf.data.difficulty === 'Medium').length,
+    Hard: ctfs.filter(ctf => ctf.data.difficulty === 'Hard').length
+  }
+};
+---
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
+    <h3 class="text-lg font-semibold mb-2">Progress</h3>
+    <div class="flex justify-between items-center">
+      <span>Solved</span>
+      <span class="text-2xl font-bold">{stats.solved}/{stats.total}</span>
+    </div>
+    <div class="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full mt-2">
+      <div class="bg-blue-500 h-2 rounded-full" style={`width: ${(stats.solved/stats.total)*100}%`}></div>
+    </div>
+  </div>
+
+  <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
+    <h3 class="text-lg font-semibold mb-4">By Platform</h3>
+    {Object.entries(stats.byPlatform).map(([platform, count]) => (
+      <div class="flex justify-between items-center mb-2">
+        <span>{platform}</span>
+        <span class="font-mono">{count}</span>
+      </div>
+    ))}
+  </div>
+
+  <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
+    <h3 class="text-lg font-semibold mb-4">By Difficulty</h3>
+    {Object.entries(stats.byDifficulty).map(([diff, count]) => (
+      <div class="flex justify-between items-center mb-2">
+        <span>{diff}</span>
+        <span class="font-mono">{count}</span>
+      </div>
+    ))}
+  </div>
+</div>

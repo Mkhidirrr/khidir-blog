@@ -1,9 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const title = "Khidir's Security Notes";
+import Search from '../components/Search.astro';
+
+const title = "Khidir's CyberSecurity";
 ---
 <BaseLayout title={title}>
   <main class="container mx-auto px-4 py-8">
+    <Search />
     <h1 class="text-4xl font-bold mb-8">Welcome to My Security Journey</h1>
     <div class="grid gap-6">
       <!-- Recent posts will be listed here -->

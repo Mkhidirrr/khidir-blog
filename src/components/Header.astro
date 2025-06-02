@@ -1,23 +1,67 @@
 ---
+const { currentPath } = Astro.props;
 const navItems = [
-  { title: 'Home', path: '/' },
-  { title: 'CTF', path: '/ctf' },
-  { title: 'Labs', path: '/labs' },
+  { 
+    title: 'CTF', 
+    path: '/ctf',
+    subitems: [
+      { title: 'HTB', path: '/ctf/htb' },
+      { title: 'THM', path: '/ctf/thm' },
+      { title: 'PicoCTF', path: '/ctf/picoctf' },
+      { title: 'OverTheWire', path: '/ctf/overthewire' },
+      { title: 'RootMe', path: '/ctf/rootme' },
+    ]
+  },
+  { 
+    title: 'Labs', 
+    path: '/labs',
+    subitems: [
+      { title: 'AWS', path: '/labs/aws' },
+      { title: 'Azure', path: '/labs/azure' },
+      { title: 'GCP', path: '/labs/gcp' },
+    ]
+  },
   { title: 'Blog', path: '/blog' },
   { title: 'About', path: '/about' }
 ];
 ---
 
-<header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
   <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
-    <a href="/" class="text-xl font-bold">🔒 Security Notes</a>
+    <a href="/" class="text-xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+      KhidirID
+    </a>
     
     <div class="flex items-center gap-6">
       {navItems.map(item => (
-        <a href={item.path} class="hover:text-blue-500 transition-colors">
-          {item.title}
-        </a>
+        <div class="relative group">
+          <a 
+            href={item.path} 
+            class:list={[
+              "hover:text-blue-500 transition-colors",
+              { "text-blue-500": currentPath?.startsWith(item.path) }
+            ]}
+          >
+            {item.title}
+          </a>
+          
+          {item.subitems && (
+            <div class="absolute hidden group-hover:block w-48 pt-2">
+              <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border dark:border-gray-700">
+                {item.subitems.map(subitem => (
+                  <a 
+                    href={subitem.path}
+                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    {subitem.title}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       ))}
+      
       <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
         🌗
       </button>
