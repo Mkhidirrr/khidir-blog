@@ -19,5 +19,17 @@
         }
       ]
     }
-  ]
+  ],
+  "public": true,
+  "crons": [
+    {
+      "path": "/api/rebuild",
+      "schedule": "0 5 * * *"
+    }
+  ],
+  "build": {
+    "env": {
+      "ENABLE_FILE_SYSTEM_API": "1"
+    }
+  }
 }
