@@ -29,9 +29,17 @@ export default defineConfig({
     compress()
   ],
   markdown: {
-    syntaxHighlight: 'shiki',
     shikiConfig: {
       theme: 'dracula',
+      langs: [
+        'bash',
+        'javascript',
+        'typescript',
+        'json',
+        'markdown',
+        'yaml',
+        'plaintext'
+      ],
       wrap: true
     }
   }

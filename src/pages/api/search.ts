@@ -1,6 +1,6 @@
 import { getCollection } from 'astro:content';
 
-export async function get({ url }: { url: URL }) {
+export async function GET({ url }: { url: URL }) {
   const query = url.searchParams.get('q')?.toLowerCase() || '';
   
   const allContent = [

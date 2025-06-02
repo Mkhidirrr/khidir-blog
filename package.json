@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "clean": "rm -rf dist .vercel .astro",
+    "clean": "rimraf dist .vercel .astro",
     "build": "npm run clean && astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -21,6 +21,7 @@
   "dependencies": {
     "@astrojs/mdx": "^1.1.0",
     "@astrojs/react": "^3.0.7",
+    "@astrojs/rss": "^4.0.1",
     "@astrojs/sitemap": "^3.0.3",
     "@astrojs/tailwind": "^5.0.3",
     "@astrojs/vercel": "^5.0.2",
@@ -34,7 +35,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sharp": "^0.32.5",
-    "tailwindcss": "^3.3.3"
+    "tailwindcss": "^3.3.3",
+    "shiki": "^0.14.7"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "^6.7.0",
