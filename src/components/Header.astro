@@ -1,0 +1,44 @@
+---
+const navItems = [
+  { title: 'Home', path: '/' },
+  { title: 'CTF', path: '/ctf' },
+  { title: 'Labs', path: '/labs' },
+  { title: 'Blog', path: '/blog' },
+  { title: 'About', path: '/about' }
+];
+---
+
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+  <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
+    <a href="/" class="text-xl font-bold">🔒 Security Notes</a>
+    
+    <div class="flex items-center gap-6">
+      {navItems.map(item => (
+        <a href={item.path} class="hover:text-blue-500 transition-colors">
+          {item.title}
+        </a>
+      ))}
+      <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+        🌗
+      </button>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const themeToggle = document.getElementById('theme-toggle');
+  
+  themeToggle?.addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', 
+      document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+    );
+  });
+
+  // Check initial theme
+  if (localStorage.getItem('theme') === 'dark' || 
+      (!localStorage.getItem('theme') && 
+       window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
+  }
+</script>
