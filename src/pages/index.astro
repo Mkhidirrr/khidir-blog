@@ -2,79 +2,121 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const ctfs = await getCollection('ctf');
-const featuredPosts = await getCollection('blog', ({ data }) => data.featured);
+const recentCTFs = await getCollection('ctf', ({ data }) => !data.draft);
+const recentPosts = await getCollection('blog', ({ data }) => !data.draft);
 
 const stats = {
-  totalCTFs: ctfs.length,
-  solvedCTFs: ctfs.filter(ctf => ctf.data.solved).length,
-  platforms: [...new Set(ctfs.map(ctf => ctf.data.platform))].length,
-  writeups: ctfs.filter(ctf => ctf.data.solved).length
+  solvedCTFs: recentCTFs.filter(c => c.data.solved).length,
+  totalWriteups: recentCTFs.length + recentPosts.length,
+  platforms: [...new Set(recentCTFs.map(c => c.data.platform))].length
 };
 ---
 
-<BaseLayout>
-  <!-- Hero Section with Particles -->
-  <div class="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-600 to-purple-600">
-    <div id="particles-js" class="absolute inset-0 opacity-30"></div>
-    <div class="relative z-10 text-center text-white px-4">
-      <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
+<BaseLayout title="KhidirID - Security Researcher">
+  <!-- Hero Section -->
+  <div class="relative min-h-[90vh] flex items-center justify-center bg-gradient-to-br from-amber-500 to-red-600 text-white overflow-hidden">
+    <div class="absolute inset-0 bg-grid-white/[0.1] bg-[size:60px_60px] animate-[grid_20s_linear_infinite]"></div>
+    <div class="container mx-auto px-4 text-center relative z-10">
+      <h1 
+        class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in"
+        style="--animation-delay: 200ms"
+      >
         Security Through
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-pink-500">
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-white to-amber-200">
           Knowledge Sharing
         </span>
       </h1>
-      <p class="text-xl md:text-2xl text-blue-100 mb-8 max-w-2xl mx-auto">
-        Exploring cybersecurity through CTF writeups, cloud security labs, and practical guides
+      <p 
+        class="text-xl md:text-2xl text-amber-100 max-w-2xl mx-auto mb-8 animate-fade-in"
+        style="--animation-delay: 400ms"
+      >
+        Exploring cybersecurity through CTF writeups, labs, and practical guides
       </p>
-      <div class="flex gap-4 justify-center">
-        <a href="/ctf" class="px-6 py-3 bg-white text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors">
-          View Writeups
+      <div 
+        class="flex flex-wrap justify-center gap-4 animate-fade-in"
+        style="--animation-delay: 600ms"
+      >
+        <a href="/ctf" class="px-6 py-3 bg-white text-amber-600 rounded-lg font-medium hover:bg-amber-50 transition-colors">
+          View CTF Writeups
         </a>
-        <a href="/blog" class="px-6 py-3 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-400 transition-colors">
+        <a href="/blog" class="px-6 py-3 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-500 transition-colors">
           Read Blog
         </a>
       </div>
     </div>
+    <div class="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-gray-50 dark:from-gray-900 to-transparent"></div>
   </div>
 
   <!-- Stats Section -->
-  <div class="py-16 bg-gray-50 dark:bg-gray-900">
+  <section class="py-20 bg-gray-50 dark:bg-gray-900">
     <div class="container mx-auto px-4">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
         {Object.entries(stats).map(([key, value]) => (
-          <div class="text-center">
-            <div class="text-4xl font-bold text-blue-600 mb-2">{value}</div>
+          <div class="text-center animate-fade-in-up">
+            <div class="text-4xl font-bold text-amber-500 mb-2">{value}</div>
             <div class="text-gray-600 dark:text-gray-400 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
           </div>
         ))}
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Featured Content -->
-  <section class="py-16">
+  <!-- Latest Content -->
+  <section class="py-20">
     <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold mb-8">Featured Content</h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        {featuredPosts.map(post => (
-          <a href={`/blog/${post.slug}`} class="group">
-            <article class="h-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg transition-transform group-hover:-translate-y-1">
-              {post.data.coverImage && (
-                <img 
-                  src={post.data.coverImage} 
-                  alt={post.data.title}
-                  class="w-full h-48 object-cover"
-                />
-              )}
-              <div class="p-6">
-                <h3 class="font-bold text-xl mb-2 group-hover:text-blue-500">{post.data.title}</h3>
-                <p class="text-gray-600 dark:text-gray-400">{post.data.description}</p>
+      <h2 class="text-3xl font-bold mb-12 text-center">Latest Content</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {[...recentCTFs, ...recentPosts].slice(0, 6).map((content, index) => (
+          <article 
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 animate-fade-in"
+            style={`--animation-delay: ${800 + index * 100}ms`}
+          >
+            <a href={`/${content.collection}/${content.slug}`} class="block p-6">
+              <div class="flex items-center gap-3 mb-4">
+                <span class="text-sm px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 rounded-full">
+                  {content.data.category}
+                </span>
+                <time class="text-sm text-gray-500">
+                  {new Date(content.data.date).toLocaleDateString()}
+                </time>
               </div>
-            </article>
-          </a>
+              <h3 class="text-xl font-bold mb-2 hover:text-amber-500 transition-colors">
+                {content.data.title}
+              </h3>
+              <p class="text-gray-600 dark:text-gray-400 line-clamp-2">
+                {content.data.description}
+              </p>
+            </a>
+          </article>
         ))}
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes grid {
+    to { transform: translate(-50%, -50%) rotate(30deg); }
+  }
+
+  .animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+    animation-delay: var(--animation-delay, 0ms);
+  }
+
+  .animate-fade-in-up {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+</style>
