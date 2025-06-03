@@ -2,34 +2,41 @@
 ---
 
 <div id="page-transition" class="fixed inset-0 z-[9999] pointer-events-none">
-  <div class="absolute inset-0 bg-gray-50 dark:bg-gray-900 transform -translate-y-full transition-transform duration-500 ease-in-out"></div>
-  <div class="absolute inset-0 bg-gray-50 dark:bg-gray-900 transform translate-y-full transition-transform duration-500 ease-in-out"></div>
+  <div class="absolute inset-0 bg-white dark:bg-gray-900 transform transition-transform duration-700 ease-in-out">
+    <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-20 dark:opacity-10"></div>
+  </div>
 </div>
 
 <script>
+  let isTransitioning = false;
+
   document.addEventListener('astro:before-preparation', () => {
+    if (isTransitioning) return;
+    isTransitioning = true;
+
     const transition = document.getElementById('page-transition');
     if (transition) {
-      transition.classList.add('transitioning');
-      transition.children[0].classList.remove('-translate-y-full');
-      transition.children[1].classList.remove('translate-y-full');
+      transition.classList.add('pointer-events-auto');
+      transition.querySelector('div').classList.add('translate-x-0');
+      transition.querySelector('div').classList.remove('-translate-x-full');
     }
   });
 
   document.addEventListener('astro:after-preparation', () => {
-    const transition = document.getElementById('page-transition');
-    if (transition) {
-      setTimeout(() => {
-        transition.children[0].classList.add('-translate-y-full');
-        transition.children[1].classList.add('translate-y-full');
-        transition.classList.remove('transitioning');
-      }, 500);
-    }
+    setTimeout(() => {
+      const transition = document.getElementById('page-transition');
+      if (transition) {
+        transition.querySelector('div').classList.add('-translate-x-full');
+        transition.querySelector('div').classList.remove('translate-x-0');
+        transition.classList.remove('pointer-events-auto');
+        isTransitioning = false;
+      }
+    }, 300);
   });
 </script>
 
 <style>
-  .transitioning {
-    pointer-events: auto;
+  #page-transition > div {
+    transform: translateX(-100%);
   }
 </style>

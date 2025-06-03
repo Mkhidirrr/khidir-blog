@@ -11,23 +11,20 @@ const navItems = [
 <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
   <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
     <a href="/" class="flex items-center gap-2 group">
-      <div class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-blue-500/50 group-hover:ring-blue-500 transition-all">
+      <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden ring-2 ring-blue-500/50">
         <img 
           src="/images/profile/avatar.png" 
           alt="KhidirID"
-          width="40"
-          height="40"
-          loading="eager"
-          decoding="async"
           class="w-full h-full object-cover transform hover:scale-105 transition-transform"
         />
       </div>
-      <span class="text-xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+      <span class="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
         KhidirID
       </span>
     </a>
     
-    <div class="flex items-center gap-6">
+    <!-- Desktop Navigation -->
+    <div class="hidden md:flex items-center gap-6">
       {navItems.map(item => (
         <div class="relative group">
           <a 
@@ -45,29 +42,63 @@ const navItems = [
       <button 
         id="theme-toggle" 
         class="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-500 transition-colors"
+        aria-label="Toggle theme"
       >
-        🌗
+        <div class="w-6 h-6 relative">
+          <svg class="absolute inset-0 transform transition-transform duration-500 rotate-0 dark:-rotate-90 dark:opacity-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <svg class="absolute inset-0 transform transition-transform duration-500 rotate-90 opacity-0 dark:rotate-0 dark:opacity-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </div>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="md:hidden">
+      <button id="mobile-menu-button" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path class="mobile-menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          <path class="mobile-menu-close hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
       </button>
     </div>
   </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden hidden">
+    <nav class="px-4 pt-2 pb-4 space-y-2 bg-white dark:bg-gray-900 border-b dark:border-gray-800">
+      {navItems.map(item => (
+        <a 
+          href={item.path}
+          class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+        >
+          {item.title}
+        </a>
+      ))}
+    </nav>
+  </div>
 </header>
 
 <script>
-  const themeToggle = document.getElementById('theme-toggle');
-  
-  themeToggle?.addEventListener('click', () => {
-    document.documentElement.classList.toggle('dark');
-    localStorage.setItem('theme', 
-      document.documentElement.classList.contains('dark') ? 'dark' : 'light'
-    );
-  });
-
   // Check initial theme
   if (localStorage.getItem('theme') === 'dark' || 
       (!localStorage.getItem('theme') && 
        window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     document.documentElement.classList.add('dark');
   }
+
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuIcon = document.querySelector('.mobile-menu-icon');
+  const closeIcon = document.querySelector('.mobile-menu-close');
+
+  mobileMenuButton?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+    menuIcon?.classList.toggle('hidden');
+    closeIcon?.classList.toggle('hidden');
+  });
 </script>
 
 <style>

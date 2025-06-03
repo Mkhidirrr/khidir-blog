@@ -1,43 +1,127 @@
 ---
 ---
 
-<div class="relative max-w-lg mx-auto">
-  <input
-    type="search"
-    id="search"
-    class="w-full px-4 py-2 rounded-lg border dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500"
-    placeholder="Search posts..."
-  />
-  <div id="search-results" class="absolute w-full mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border dark:border-gray-700 hidden">
+<div class="relative">
+  <div class="relative">
+    <input
+      type="search"
+      id="search-input"
+      placeholder="Search content... (Press '/' to focus)"
+      class="w-full px-4 py-3 pl-10 rounded-lg border dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 transition-all"
+    />
+    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    </span>
+  </div>
+
+  <div id="search-results" class="absolute w-full mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border dark:border-gray-700 max-h-96 overflow-auto hidden">
+    <div id="loading-indicator" class="p-4 text-center hidden">
+      <div class="animate-spin w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full mx-auto"></div>
+    </div>
+    <div id="results-container"></div>
   </div>
 </div>
 
 <script>
-  const search = document.getElementById('search');
-  const results = document.getElementById('search-results');
+  import Fuse from 'fuse.js';
+
+  let fuse;
+  let searchResults;
+  let loading;
+  let resultsContainer;
   
-  search?.addEventListener('input', async (e) => {
-    const query = (e.target as HTMLInputElement).value;
-    if (query.length < 2) {
-      results?.classList.add('hidden');
-      return;
-    }
-    
+  async function initializeSearch() {
+    loading = document.getElementById('loading-indicator');
+    searchResults = document.getElementById('search-results');
+    resultsContainer = document.getElementById('results-container');
+
     try {
-      const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+      const response = await fetch('/search-index.json');
       const data = await response.json();
       
-      results?.classList.remove('hidden');
-      results!.innerHTML = data.results
-        .map((result: any) => `
-          <a href="${result.url}" class="block p-4 hover:bg-gray-100 dark:hover:bg-gray-700">
-            <div class="font-medium">${result.title}</div>
-            <div class="text-sm text-gray-600 dark:text-gray-400">${result.type} • ${result.platform}</div>
-          </a>
-        `)
-        .join('');
+      fuse = new Fuse(data, {
+        keys: ['title', 'description', 'tags'],
+        threshold: 0.3,
+        ignoreLocation: true
+      });
     } catch (err) {
-      console.error('Search failed:', err);
+      console.error('Failed to initialize search:', err);
     }
+  }
+
+  function showLoading() {
+    if (loading) loading.classList.remove('hidden');
+  }
+
+  function hideLoading() {
+    if (loading) loading.classList.add('hidden');
+  }
+
+  function handleSearch(query) {
+    if (!fuse || !query) return;
+    
+    showLoading();
+    searchResults?.classList.remove('hidden');
+
+    setTimeout(() => {
+      const results = fuse.search(query);
+      
+      if (resultsContainer) {
+        resultsContainer.innerHTML = results.length ? results
+          .map(({ item }) => `
+            <a href="${item.url}" class="block p-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <h3 class="font-medium">${highlightMatches(item.title, query)}</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                ${highlightMatches(item.description, query)}
+              </p>
+            </a>
+          `)
+          .join('') : `
+          <div class="p-4 text-gray-500">
+            No results found for "${query}"
+          </div>
+        `;
+      }
+      
+      hideLoading();
+    }, 150);
+  }
+
+  function highlightMatches(text, query) {
+    return text.replace(new RegExp(query, 'gi'), match => `<mark class="bg-yellow-200 dark:bg-yellow-900">${match}</mark>`);
+  }
+
+  // Initialize search and keyboard shortcuts
+  document.addEventListener('astro:page-load', () => {
+    initializeSearch();
+
+    const searchInput = document.getElementById('search-input');
+    if (!searchInput) return;
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && !e.target.matches('input, textarea')) {
+        e.preventDefault();
+        searchInput.focus();
+      }
+      if (e.key === 'Escape') {
+        searchInput.blur();
+        searchResults?.classList.add('hidden');
+      }
+    });
+
+    // Handle search input
+    searchInput.addEventListener('input', (e) => {
+      handleSearch(e.target.value);
+    });
+
+    // Close search results when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-container')) {
+        searchResults?.classList.add('hidden');
+      }
+    });
   });
 </script>

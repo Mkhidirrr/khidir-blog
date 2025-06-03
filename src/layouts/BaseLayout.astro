@@ -64,6 +64,36 @@ const currentPath = Astro.url.pathname;
         --primary-dark: theme('colors.blue.600');
         --accent: theme('colors.purple.500');
       }
+
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation: none;
+        mix-blend-mode: normal;
+      }
+      
+      .dark::view-transition-old(root),
+      .dark::view-transition-new(root) {
+        mix-blend-mode: normal;
+      }
+
+      .container {
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+      }
+
+      @media (max-width: 640px) {
+        html {
+          font-size: 14px;
+        }
+      }
+
+      /* Tablet adjustments */
+      @media (min-width: 641px) and (max-width: 1024px) {
+        .container {
+          padding-left: 2rem;
+          padding-right: 2rem;
+        }
+      }
     </style>
   </head>
   <body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 min-h-screen font-sans">
@@ -85,16 +115,3 @@ const currentPath = Astro.url.pathname;
     <Analytics />
   </body>
 </html>
-
-<style is:global>
-  @media (max-width: 640px) {
-    html {
-      font-size: 14px;
-    }
-  }
-
-  .container {
-    padding-left: max(1rem, env(safe-area-inset-left));
-    padding-right: max(1rem, env(safe-area-inset-right));
-  }
-</style>
