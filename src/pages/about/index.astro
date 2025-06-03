@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = "About";
+const description = "About me, my interests and my professional background.";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="relative bg-gradient-to-br from-cyan-600 to-sky-600 text-white overflow-hidden">
+    <div class="max-w-4xl mx-auto px-4 py-32">
+      <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight mb-8">
+        About Me
+      </h1>
+      <p class="text-lg sm:text-xl mb-8">
+        Welcome to my blog! I'm Khidir, a passionate software engineer with an
+        interest in web development, AI, and cloud computing. This is my space to
+        share thoughts, tutorials, and insights on the latest tech trends.
+      </p>
+      <div class="flex items-center">
+        <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+        <span class="ml-3 text-sm sm:text-base">
+          <a
+            href="https://www.linkedin.com/in/yourprofile"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white hover:underline"
+            >LinkedIn</a
+          >
+          ,
+          <a
+            href="https://github.com/yourprofile"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white hover:underline"
+            >GitHub</a
+          >
+          , and
+          <a
+            href="https://twitter.com/yourprofile"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white hover:underline"
+            >Twitter</a
+          >
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 py-16">
+    <h2 class="text-3xl sm:text-4xl font-bold leading-tight mb-8">
+      My Interests
+    </h2>
+    <p class="text-lg sm:text-xl mb-8">
+      I'm interested in a variety of topics within the tech sphere, including
+      but not limited to:
+    </p>
+    <ul class="list-disc list-inside mb-8">
+      <li class="text-lg sm:text-xl">
+        Web development: Building responsive and accessible websites.
+      </li>
+      <li class="text-lg sm:text-xl">
+        AI and Machine Learning: Exploring the potentials of AI.
+      </li>
+      <li class="text-lg sm:text-xl">
+        Cloud Computing: Understanding cloud services and deployment.
+      </li>
+    </ul>
+    <p class="text-lg sm:text-xl">
+      When I'm not coding or writing, I enjoy hiking, reading, and exploring
+      new technologies.
+    </p>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 py-16">
+    <h2 class="text-3xl sm:text-4xl font-bold leading-tight mb-8">
+      My Professional Background
+    </h2>
+    <p class="text-lg sm:text-xl mb-8">
+      I hold a degree in Computer Science and have worked in various
+      engineering roles, focusing on software development and cloud
+      infrastructure.
+    </p>
+    <p class="text-lg sm:text-xl mb-8">
+      Currently, I work as a Software Engineer at a leading tech company,
+      where I contribute to developing scalable web applications and
+      optimizing cloud resources.
+    </p>
+    <p class="text-lg sm:text-xl">
+      Let's connect and explore opportunities to collaborate or share
+      knowledge!
+    </p>
+  </div>
+</BaseLayout>
