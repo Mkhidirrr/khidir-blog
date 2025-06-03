@@ -1,12 +1,27 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import TagList from '../components/TagList.astro';
+import ShareButtons from '../components/ShareButtons.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import RelatedPosts from '../components/RelatedPosts.astro';
+import BackToTop from '../components/BackToTop.astro';
+import ImageZoom from '../components/ImageZoom.astro';
+import FloatingTOC from '../components/FloatingTOC.astro';
+import { getReadingTime } from '../utils/readingTime';
+import { getCollection } from 'astro:content';
 
-const { frontmatter } = Astro.props;
+const { frontmatter, headings } = Astro.props;
+const readingTime = getReadingTime(Astro.props.content);
+
+// Get next and previous posts
+const allPosts = await getCollection(frontmatter.collection);
+const currentIndex = allPosts.findIndex(post => post.data.title === frontmatter.title);
+const prevPost = allPosts[currentIndex - 1];
+const nextPost = allPosts[currentIndex + 1];
 ---
 
 <BaseLayout title={frontmatter.title} description={frontmatter.description}>
-  <article class="container mx-auto px-4 py-8 max-w-4xl">
+  <article class="container mx-auto px-4 py-8">
     <header class="mb-8">
       <h1 class="text-4xl font-bold mb-4">{frontmatter.title}</h1>
       <div class="flex items-center gap-4 text-gray-600 dark:text-gray-400 mb-4">
@@ -24,11 +39,49 @@ const { frontmatter } = Astro.props;
           </span>
         )}
       </div>
+      <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+        <time datetime={frontmatter.date}>
+          {new Date(frontmatter.date).toLocaleDateString()}
+        </time>
+        <span>•</span>
+        <span>{readingTime} min read</span>
+      </div>
       <TagList tags={frontmatter.tags} />
     </header>
     
-    <div class="prose dark:prose-invert max-w-none">
-      <slot />
+    <!-- Main content with TOC sidebar -->
+    <div class="lg:grid lg:grid-cols-[250px_1fr] gap-8">
+      <FloatingTOC headings={headings} />
+      <div class="prose dark:prose-invert max-w-none">
+        <slot />
+      </div>
     </div>
+
+    <!-- Navigation -->
+    <nav class="mt-12 flex justify-between border-t dark:border-gray-800 pt-8">
+      {prevPost && (
+        <a href={`/${frontmatter.collection}/${prevPost.slug}`} class="group">
+          <span class="block text-sm text-gray-600 dark:text-gray-400">Previous</span>
+          <span class="text-lg font-medium group-hover:text-blue-500">{prevPost.data.title}</span>
+        </a>
+      )}
+      
+      {nextPost && (
+        <a href={`/${frontmatter.collection}/${nextPost.slug}`} class="group text-right">
+          <span class="block text-sm text-gray-600 dark:text-gray-400">Next</span>
+          <span class="text-lg font-medium group-hover:text-blue-500">{nextPost.data.title}</span>
+        </a>
+      )}
+    </nav>
+
+    <!-- Related Posts -->
+    <RelatedPosts 
+      currentPost={frontmatter} 
+      collection={frontmatter.collection}
+      tags={frontmatter.tags}
+    />
   </article>
+
+  <BackToTop />
+  <ImageZoom />
 </BaseLayout>

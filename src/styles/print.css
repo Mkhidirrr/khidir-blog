@@ -1,0 +1,29 @@
+@media print {
+  /* Hide non-essential elements */
+  header nav,
+  footer,
+  .share-buttons,
+  .command-palette,
+  #back-to-top {
+    display: none !important;
+  }
+
+  /* Optimize content for printing */
+  article {
+    page-break-inside: avoid;
+  }
+
+  pre, code {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+  }
+
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+}

@@ -1,0 +1,12 @@
+---
+const ANALYTICS_ID = import.meta.env.PUBLIC_GA_ID;
+---
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS_ID}`}></script>
+<script define:vars={{ ANALYTICS_ID }}>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', ANALYTICS_ID);
+</script>

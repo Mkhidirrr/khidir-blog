@@ -1,0 +1,21 @@
+---
+const shortcuts = [
+  { key: '/', description: 'Focus search' },
+  { key: '⌘ K', description: 'Open command palette' },
+  { key: '⌘ /', description: 'Show keyboard shortcuts' }
+];
+---
+
+<div id="shortcuts-modal" class="fixed inset-0 bg-black/50 z-50 hidden" role="dialog" aria-modal="true">
+  <div class="bg-white dark:bg-gray-800 max-w-md mx-auto mt-20 rounded-lg shadow-xl p-6">
+    <h2 class="text-lg font-semibold mb-4">Keyboard Shortcuts</h2>
+    <div class="space-y-2">
+      {shortcuts.map(shortcut => (
+        <div class="flex justify-between">
+          <kbd class="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">{shortcut.key}</kbd>
+          <span>{shortcut.description}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+---
+---
+
+<div class="fixed top-0 left-0 w-full h-1 z-50">
+  <div id="progress-bar" class="h-full w-0 bg-blue-500 transition-all duration-100"></div>
+</div>
+
+<script>
+  const progressBar = document.getElementById('progress-bar');
+  
+  window.addEventListener('scroll', () => {
+    const winScroll = document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    
+    if (progressBar) {
+      progressBar.style.width = `${scrolled}%`;
+    }
+  });
+</script>

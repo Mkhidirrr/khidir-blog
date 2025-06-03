@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageTransition from '../components/PageTransition';
+import Analytics from '../components/Analytics.astro';
 import '../styles/animations.css';
 const { title, description = "Personal blog about Cybersecurity, CTF writeups, and cloud security labs" } = Astro.props;
 const currentPath = Astro.url.pathname;
@@ -23,30 +24,54 @@ const currentPath = Astro.url.pathname;
     <meta property="og:description" content={description}>
     <meta property="og:type" content="website">
     <meta property="og:url" content={Astro.url}>
+    <meta property="og:image" content="https://khidir.dev/images/profile/avatar.webp">
     
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔒</text></svg>">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="@KhidirID">
+    <meta name="twitter:image" content="https://khidir.dev/images/profile/avatar.webp">
     
-    <!-- Fonts -->
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "KhidirID",
+        "url": "https://khidir.dev",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://khidir.dev/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+
+    <!-- Performance Optimizations -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#3B82F6">
+    
+    <!-- Themed Favicon -->
+    <link rel="icon" type="image/webp" href="/images/profile/avatar.webp">
   </head>
-  <body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 min-h-screen">
+  <body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 min-h-screen font-sans">
     <div class="relative">
-      <!-- Decorative blob -->
-      <div class="fixed inset-0 -z-10 animate-float opacity-30 dark:opacity-10">
-        <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-300 dark:bg-purple-700 rounded-full mix-blend-multiply filter blur-xl"></div>
-        <div class="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 dark:bg-yellow-700 rounded-full mix-blend-multiply filter blur-xl"></div>
-        <div class="absolute bottom-0 left-20 w-72 h-72 bg-pink-300 dark:bg-pink-700 rounded-full mix-blend-multiply filter blur-xl"></div>
+      <!-- Animated background elements -->
+      <div class="fixed inset-0 -z-10">
+        <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-300 dark:bg-purple-900 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
+        <div class="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 dark:bg-yellow-900 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 dark:bg-pink-900 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
       </div>
 
       <Header currentPath={currentPath} />
-      <PageTransition client:load>
-        <main class="container mx-auto px-4 py-8 relative z-10 backdrop-blur-sm">
-          <slot />
-        </main>
-      </PageTransition>
+      <main class="relative">
+        <slot />
+      </main>
       <Footer />
     </div>
+    <Analytics />
   </body>
 </html>

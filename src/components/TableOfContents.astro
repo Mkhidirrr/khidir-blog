@@ -1,0 +1,36 @@
+---
+const { headings } = Astro.props;
+---
+
+<nav class="toc">
+  <h2 class="text-lg font-semibold mb-3">Table of Contents</h2>
+  <ul class="space-y-2">
+    {headings.map(heading => (
+      <li class={`pl-${(heading.depth - 1) * 4}`}>
+        <a href={`#${heading.slug}`} class="hover:text-blue-500 transition-colors">
+          {heading.text}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  // Highlight current section
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = entry.target.getAttribute('id');
+      const tocLink = document.querySelector(`a[href="#${id}"]`);
+      
+      if (entry.isIntersecting) {
+        tocLink?.classList.add('text-blue-500');
+      } else {
+        tocLink?.classList.remove('text-blue-500');
+      }
+    });
+  });
+
+  document.querySelectorAll('h2, h3, h4').forEach((heading) => {
+    observer.observe(heading);
+  });
+</script>

@@ -38,9 +38,36 @@ export default defineConfig({
         'json',
         'markdown',
         'yaml',
+        'python',
+        'sql',
         'plaintext'
       ],
       wrap: true
     }
+  },
+  vite: {
+    build: {
+      // Bundle optimization
+      cssCodeSplit: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'react-vendor': ['react', 'react-dom'],
+            'chart': ['chart.js'],
+          }
+        }
+      }
+    },
+    // Cache optimization
+    ssr: {
+      noExternal: ['@astrojs/*']
+    }
+  },
+  image: {
+    // Image optimization
+    service: {
+      entrypoint: 'astro/assets/services/sharp'
+    },
+    domains: ['images.unsplash.com']
   }
 });

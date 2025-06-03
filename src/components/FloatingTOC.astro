@@ -1,0 +1,42 @@
+---
+const { headings } = Astro.props;
+---
+
+<nav class="hidden lg:block sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
+  <h2 class="font-semibold mb-4 text-sm uppercase tracking-wider text-gray-500">On this page</h2>
+  <ul class="space-y-3 text-sm">
+    {headings.map(heading => (
+      <li class={`pl-${(heading.depth - 1) * 4}`}>
+        <a 
+          href={`#${heading.slug}`}
+          class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
+          data-heading-link
+        >
+          {heading.text}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        const id = entry.target.getAttribute('id');
+        const link = document.querySelector(`[data-heading-link][href="#${id}"]`);
+        
+        if (entry.isIntersecting) {
+          link?.classList.add('text-blue-500', 'font-medium');
+        } else {
+          link?.classList.remove('text-blue-500', 'font-medium');
+        }
+      });
+    },
+    { rootMargin: '-100px 0px -66%' }
+  );
+
+  document.querySelectorAll('h2, h3, h4').forEach(heading => {
+    observer.observe(heading);
+  });
+</script>

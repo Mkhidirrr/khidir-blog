@@ -1,0 +1,40 @@
+---
+const themes = [
+  { id: 'default', name: 'Default', icon: '🌈' },
+  { id: 'green', name: 'Forest', icon: '🌲' },
+  { id: 'purple', name: 'Night', icon: '🌙' }
+];
+---
+
+<div class="relative group">
+  <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+    <span class="sr-only">Choose theme</span>
+    <span id="current-theme-icon">🌈</span>
+  </button>
+
+  <div class="absolute right-0 mt-2 w-48 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+    {themes.map(theme => (
+      <button
+        class="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+        data-theme-value={theme.id}
+      >
+        <span>{theme.icon}</span>
+        <span>{theme.name}</span>
+      </button>
+    ))}
+  </div>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('[data-theme-value]');
+  const icon = document.getElementById('current-theme-icon');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const theme = button.getAttribute('data-theme-value');
+      document.documentElement.setAttribute('data-theme', theme || '');
+      localStorage.setItem('theme-color', theme || '');
+      if (icon) icon.textContent = button.querySelector('span')?.textContent || '🌈';
+    });
+  });
+</script>

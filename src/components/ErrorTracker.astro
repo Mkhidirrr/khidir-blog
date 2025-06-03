@@ -1,0 +1,12 @@
+---
+const SENTRY_DSN = import.meta.env.PUBLIC_SENTRY_DSN;
+---
+
+<script define:vars={{ SENTRY_DSN }}>
+  import * as Sentry from '@sentry/browser';
+
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    tracesSampleRate: 1.0,
+  });
+</script>

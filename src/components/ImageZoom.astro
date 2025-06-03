@@ -1,0 +1,36 @@
+---
+---
+
+<div id="image-zoom-overlay" class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center">
+  <button class="absolute top-4 right-4 text-white p-2" id="close-zoom">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+  <img src="" alt="" class="max-h-[90vh] max-w-[90vw] object-contain" id="zoomed-image">
+</div>
+
+<script>
+  const overlay = document.getElementById('image-zoom-overlay');
+  const zoomedImage = document.getElementById('zoomed-image');
+  const closeButton = document.getElementById('close-zoom');
+
+  document.querySelectorAll('.prose img').forEach(img => {
+    img.classList.add('cursor-zoom-in');
+    img.addEventListener('click', () => {
+      if (zoomedImage && overlay) {
+        zoomedImage.src = img.src;
+        zoomedImage.alt = img.alt;
+        overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
+      }
+    });
+  });
+
+  closeButton?.addEventListener('click', () => {
+    if (overlay) {
+      overlay.classList.add('hidden');
+      overlay.classList.remove('flex');
+    }
+  });
+</script>

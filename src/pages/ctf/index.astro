@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AnimatedCard from '../../components/AnimatedCard';
+import LoadingSkeleton from '../../components/LoadingSkeleton.astro';
 import { getCollection } from 'astro:content';
 
 const platforms = ['HTB', 'THM', 'PicoCTF', 'OverTheWire', 'RootMe'];
@@ -10,28 +11,84 @@ const ctfsByPlatform = platforms.reduce((acc, platform) => {
   acc[platform] = ctfs.filter(ctf => ctf.data.platform === platform);
   return acc;
 }, {});
+
+const totalChallenges = Object.values(ctfsByPlatform).reduce((acc, challenges) => acc + challenges.length, 0);
+const solvedChallenges = Object.values(ctfsByPlatform).reduce((acc, challenges) => 
+  acc + challenges.filter(c => c.data.solved).length, 0);
 ---
 
 <BaseLayout title="CTF Writeups">
+  <!-- Hero Section -->
+  <div class="relative bg-gradient-to-br from-blue-600 to-purple-600 text-white">
+    <div class="container mx-auto px-4 py-16">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">CTF Writeups</h1>
+      <p class="text-xl text-blue-100 mb-6">Exploring and documenting various CTF challenges</p>
+      <div class="flex gap-4 text-sm">
+        <div class="bg-white/10 rounded-lg px-4 py-2">
+          <span class="block text-2xl font-bold">{totalChallenges}</span>
+          <span>Total Challenges</span>
+        </div>
+        <div class="bg-white/10 rounded-lg px-4 py-2">
+          <span class="block text-2xl font-bold">{solvedChallenges}</span>
+          <span>Challenges Solved</span>
+        </div>
+      </div>
+    </div>
+    <div class="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-gray-50 dark:from-gray-900 to-transparent"></div>
+  </div>
+
   <main class="container mx-auto px-4 py-8">
+    <!-- Search and Filter -->
+    <div class="mb-8">
+      <input 
+        type="search" 
+        id="ctf-search"
+        placeholder="Search challenges..."
+        class="w-full max-w-xl px-4 py-2 rounded-lg border dark:border-gray-700 bg-white dark:bg-gray-800"
+      />
+    </div>
+
     {platforms.map((platform, i) => (
       <section class="mb-16">
-        <h2 class="text-3xl font-bold mb-6">{platform}</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {ctfsByPlatform[platform].map((ctf, j) => (
-            <AnimatedCard client:load delay={j * 0.1 + i * 0.2}>
-              <h3 class="text-xl font-semibold mb-2">{ctf.data.title}</h3>
-              <p class="text-gray-600 dark:text-gray-400 mb-4">{ctf.data.description}</p>
-              <div class="flex justify-between items-center">
-                <span class="badge">{ctf.data.difficulty}</span>
-                <a href={`/ctf/${ctf.slug}`} class="text-blue-500 hover:underline">
-                  Read more →
-                </a>
-              </div>
-            </AnimatedCard>
-          ))}
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-3xl font-bold">{platform}</h2>
+          <div class="text-sm text-gray-600 dark:text-gray-400">
+            {ctfsByPlatform[platform].filter(c => c.data.solved).length} / {ctfsByPlatform[platform].length} solved
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id={`platform-${platform}`}>
+          {ctfsByPlatform[platform].length === 0 ? (
+            <LoadingSkeleton count={3} />
+          ) : (
+            ctfsByPlatform[platform].map((ctf, j) => (
+              <AnimatedCard client:load delay={j * 0.1 + i * 0.2}>
+                <h3 class="text-xl font-semibold mb-2">{ctf.data.title}</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">{ctf.data.description}</p>
+                <div class="flex justify-between items-center">
+                  <span class="badge">{ctf.data.difficulty}</span>
+                  <a href={`/ctf/${ctf.slug}`} class="text-blue-500 hover:underline">
+                    Read more →
+                  </a>
+                </div>
+              </AnimatedCard>
+            ))
+          )}
         </div>
       </section>
     ))}
   </main>
 </BaseLayout>
+
+<script>
+  const searchInput = document.getElementById('ctf-search');
+  
+  searchInput?.addEventListener('input', (e) => {
+    const query = (e.target as HTMLInputElement).value.toLowerCase();
+    
+    document.querySelectorAll('[id^="platform-"] > div').forEach((card) => {
+      const text = card.textContent?.toLowerCase() || '';
+      card.classList.toggle('hidden', !text.includes(query));
+    });
+  });
+</script>

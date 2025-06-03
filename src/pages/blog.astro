@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+const categories = ['All', 'Daily', 'Security News', 'Tutorials', 'Tools Review'];
+
+// Sort by date
+const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Blog | KhidirID">
+  <!-- Hero Section -->
+  <div class="relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+    <div class="container mx-auto px-4 py-24">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6 font-display">
+        Security Insights & Stories
+      </h1>
+      <p class="text-xl md:text-2xl text-blue-100 max-w-2xl">
+        Exploring cybersecurity through personal experiences, tutorials, and analysis.
+      </p>
+    </div>
+    <div class="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-gray-50 dark:from-gray-900 to-transparent"></div>
+  </div>
+
+  <main class="container mx-auto px-4 py-12">
+    <!-- Category Filter -->
+    <div class="flex gap-4 mb-12 overflow-x-auto pb-2">
+      {categories.map(category => (
+        <button
+          class="category-btn px-6 py-3 rounded-full border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-400 transition-colors font-medium"
+          data-category={category}
+        >
+          {category}
+        </button>
+      ))}
+    </div>
+
+    <!-- Blog Posts Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {sortedPosts.map(post => (
+        <article 
+          class="blog-post group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300"
+          data-category={post.data.category}
+        >
+          <div class="p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-sm px-3 py-1 bg-blue-100 dark:bg-blue-900 rounded-full font-medium">
+                {post.data.category}
+              </span>
+              <time class="text-sm text-gray-500">
+                {new Date(post.data.date).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric'
+                })}
+              </time>
+            </div>
+            <h2 class="text-xl font-bold mb-3 group-hover:text-blue-500 transition-colors">
+              {post.data.title}
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+              {post.data.description}
+            </p>
+            <a 
+              href={`/blog/${post.slug}`} 
+              class="inline-flex items-center text-blue-500 font-medium group-hover:text-blue-400"
+            >
+              Read more 
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .animate-blob {
+    animation: blob-bounce 7s infinite;
+  }
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+  @keyframes blob-bounce {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+</style>

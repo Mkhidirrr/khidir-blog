@@ -5,11 +5,25 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Inter var', 'sans-serif'],
+        display: ['Manrope', 'sans-serif'],
+      },
+      backgroundImage: {
+        'grid-white': 'linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px)',
+      },
+      colors: {
+        'glass': 'rgba(255, 255, 255, 0.05)',
       },
       typography: {
         DEFAULT: {
           css: {
+            maxWidth: '65ch',
+            color: 'inherit',
+            a: {
+              color: 'inherit',
+              textDecoration: 'none',
+              fontWeight: '500',
+            },
             'code::before': {
               content: '""'
             },

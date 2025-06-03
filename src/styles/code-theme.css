@@ -1,0 +1,23 @@
+.prose pre {
+  position: relative;
+  background: #1e1e1e !important;
+  border-radius: 0.5rem;
+  padding: 1.25rem 1rem;
+}
+
+.prose pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.prose pre[data-line] {
+  padding-left: 1rem;
+}
+
+.prose .highlight-line {
+  background: rgba(255, 255, 255, 0.05);
+  margin: 0 -1rem;
+  padding: 0 1rem;
+  border-left: 2px solid #3b82f6;
+}

@@ -1,0 +1,25 @@
+---
+const { slug } = Astro.props;
+---
+
+<section class="my-8">
+  <h2 class="text-2xl font-bold mb-4">Comments</h2>
+  <div id="comments"
+    data-repo="Mkhidirrr/khidir-blog"
+    data-issue-term={slug}
+    data-theme="preferred-color-scheme"
+  ></div>
+</section>
+
+<script>
+  const script = document.createElement('script');
+  script.src = 'https://utteranc.es/client.js';
+  script.setAttribute('repo', 'Mkhidirrr/khidir-blog');
+  script.setAttribute('issue-term', 'pathname');
+  script.setAttribute('theme', 'preferred-color-scheme');
+  script.crossOrigin = 'anonymous';
+  script.async = true;
+
+  const comments = document.getElementById('comments');
+  if (comments) comments.appendChild(script);
+</script>

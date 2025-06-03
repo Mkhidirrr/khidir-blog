@@ -1,0 +1,35 @@
+---
+---
+
+<button
+  class="copy-button absolute top-2 right-2 p-2 rounded-lg bg-gray-800 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+  aria-label="Copy code"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"/>
+    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2H6zm0-2h8a4 4 0 014 4v11a4 4 0 01-4 4H6a4 4 0 01-4-4V5a4 4 0 014-4z"/>
+  </svg>
+</button>
+
+<script>
+  document.querySelectorAll('pre').forEach((pre) => {
+    const button = document.createElement('button');
+    button.className = 'copy-button';
+    pre.appendChild(button);
+    
+    button.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(pre.textContent || '');
+      button.classList.add('copied');
+      setTimeout(() => button.classList.remove('copied'), 2000);
+    });
+  });
+</script>
+
+<style>
+  .copy-button.copied::before {
+    content: 'Copied!';
+    position: absolute;
+    right: 100%;
+    margin-right: 8px;
+  }
+</style>

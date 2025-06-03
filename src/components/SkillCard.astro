@@ -1,24 +1,29 @@
 ---
+interface Props {
+  category: string;
+  items: string[];
+}
+
 const { category, items } = Astro.props;
 
-const categoryIcons = {
-  cloud: "☁️",
-  offensive: "🎯",
-  defensive: "🛡️",
-  tools: "🔧"
+const icons = {
+  cloud: '☁️',
+  offensive: '🎯',
+  defensive: '🛡️',
+  tools: '🔧'
 };
 ---
 
-<div class="p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-  <h3 class="text-xl font-semibold mb-4">
-    <span>{categoryIcons[category]}</span>
-    {category.charAt(0).toUpperCase() + category.slice(1)}
+<div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+  <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+    <span>{icons[category] || '🔥'}</span>
+    <span>{category.charAt(0).toUpperCase() + category.slice(1)}</span>
   </h3>
   <ul class="space-y-2">
     {items.map(item => (
-      <li class="flex items-center">
-        <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-        {item}
+      <li class="flex items-center gap-2">
+        <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+        <span>{item}</span>
       </li>
     ))}
   </ul>
