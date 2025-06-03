@@ -10,8 +10,8 @@ import FloatingTOC from '../components/FloatingTOC.astro';
 import { getReadingTime } from '../utils/readingTime';
 import { getCollection } from 'astro:content';
 
-const { frontmatter, headings } = Astro.props;
-const readingTime = getReadingTime(Astro.props.content);
+const { frontmatter, content = '' } = Astro.props;
+const readingTime = getReadingTime(content);
 
 // Get next and previous posts
 const allPosts = await getCollection(frontmatter.collection);

@@ -16,7 +16,10 @@ const { Content } = await post.render();
 ---
 
 <BaseLayout title={post.data.title}>
-  <ContentLayout frontmatter={post.data}>
-    <Content />
-  </ContentLayout>
+  <article class="container mx-auto px-4 py-8 max-w-4xl">
+    <h1 class="text-4xl font-bold mb-4">{post.data.title}</h1>
+    <div class="prose dark:prose-invert max-w-none">
+      <Content />
+    </div>
+  </article>
 </BaseLayout>
