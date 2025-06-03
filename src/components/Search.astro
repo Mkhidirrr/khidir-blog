@@ -26,6 +26,7 @@
 
 <script>
   import Fuse from 'fuse.js';
+  import { sanitizeInput, validateSearchQuery } from '../utils/security';
 
   let fuse;
   let searchResults;
@@ -114,7 +115,14 @@
 
     // Handle search input
     searchInput.addEventListener('input', (e) => {
-      handleSearch(e.target.value);
+      const query = e.target.value;
+      if (!validateSearchQuery(query)) {
+        console.warn('Invalid search query');
+        return;
+      }
+      
+      const sanitizedQuery = sanitizeInput(query);
+      handleSearch(sanitizedQuery);
     });
 
     // Close search results when clicking outside

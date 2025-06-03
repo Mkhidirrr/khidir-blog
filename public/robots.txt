@@ -1,10 +1,7 @@
 User-agent: *
-Allow: /
 Disallow: /api/
-Disallow: /draft/
 Disallow: /admin/
-
-# Crawl-delay
-Crawl-delay: 10
+Disallow: /draft/
+Allow: /
 
 Sitemap: https://khidir.dev/sitemap.xml
