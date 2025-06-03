@@ -35,13 +35,20 @@ const paginatedPosts = sortedPosts.slice(0, postsPerPage);
     <div class="flex flex-col sm:flex-row gap-4 mb-8 animate-fade-in" style="--animation-delay: 600ms">
       <input
         type="search"
+        id="search-input"
         placeholder="Search posts..."
         class="flex-1 px-4 py-2 rounded-lg border dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500"
       />
       <div class="flex gap-2 overflow-x-auto pb-2">
+        <button
+          class="category-btn px-4 py-2 rounded-full border-2 border-gray-200 dark:border-gray-700 whitespace-nowrap hover:border-blue-500 transition-all active"
+          data-category="all"
+        >
+          All Posts
+        </button>
         {categories.map(category => (
           <button
-            class="category-btn px-4 py-2 rounded-full border-2 whitespace-nowrap hover:border-blue-500 transition-all"
+            class="category-btn px-4 py-2 rounded-full border-2 border-gray-200 dark:border-gray-700 whitespace-nowrap hover:border-blue-500 transition-all"
             data-category={category}
           >
             {category}
@@ -94,6 +101,38 @@ const paginatedPosts = sortedPosts.slice(0, postsPerPage);
     )}
   </main>
 </BaseLayout>
+
+<script>
+  // Category filtering
+  const categoryButtons = document.querySelectorAll('.category-btn');
+  const articles = document.querySelectorAll('article');
+
+  categoryButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      // Remove active state from all buttons
+      categoryButtons.forEach(btn => {
+        btn.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20');
+      });
+
+      // Add active state to clicked button
+      button.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20');
+
+      const selectedCategory = button.dataset.category;
+
+      articles.forEach(article => {
+        const articleCategory = article.querySelector('span').textContent.trim();
+        if (selectedCategory === 'all' || articleCategory === selectedCategory) {
+          article.style.display = 'block';
+        } else {
+          article.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Set initial active state
+  document.querySelector('[data-category="all"]').classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20');
+</script>
 
 <style>
   @keyframes fadeIn {
