@@ -1,7 +1,7 @@
 ---
 title: "Top Security Tools for 2024"
 category: "Tools Review"
-date: 2024-01-12
+date: 2025-06-03
 tags: ["tools", "pentest", "security"]
 description: "Review of the most effective security tools and frameworks for penetration testing and security assessment"
 ---

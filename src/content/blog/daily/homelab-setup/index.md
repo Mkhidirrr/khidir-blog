@@ -1,7 +1,7 @@
 ---
 title: "Building My Security Homelab"
 category: "Daily"
-date: 2023-12-13
+date: 2025-06-03
 tags: ["homelab", "infrastructure", "learning"]
 description: "A detailed guide on setting up a comprehensive security homelab for testing and learning"
 ---

@@ -1,7 +1,7 @@
 ---
 title: "AWS Security Best Practices Guide"
 category: "Tutorials"
-date: 2024-01-13
+date: 2025-06-03
 tags: ["aws", "cloud-security", "iam", "s3"]
 description: "Comprehensive guide to implementing AWS security best practices including IAM, S3, and network security"
 ---
