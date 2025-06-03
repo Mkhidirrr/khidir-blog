@@ -31,13 +31,13 @@ const navItems = [
     <a href="/" class="flex items-center gap-2 group">
       <div class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-amber-500/50 group-hover:ring-amber-500 transition-all">
         <img 
-          src="/public/images/profile/avatar.png" 
+          src="/images/profile/avatar.png" 
           alt="KhidirID"
           width="40"
           height="40"
           loading="eager"
           decoding="async"
-          class="w-full h-full object-cover transform hover:scale-105 transition-transform"
+          class="w-full h-full object-cover transform hover:scale-105 transition-transform debug-image"
         />
       </div>
       <span class="text-xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
@@ -104,5 +104,13 @@ const navItems = [
   img {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
+  }
+  
+  .debug-image {
+    outline: 1px solid red;
+  }
+  
+  .debug-image[src=""] {
+    background: yellow;
   }
 </style>
