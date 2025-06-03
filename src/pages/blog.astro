@@ -2,47 +2,90 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const posts = await getCollection('blog', ({ data }) => !data.draft);
-const categories = [...new Set(posts.map(post => post.data.category))];
-const sortedPosts = posts.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const categories = ['All', ...new Set(allPosts.map(post => post.data.category))];
+const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
 ---
 
 <BaseLayout title="Blog | KhidirID">
   <!-- Hero Section -->
-  <div class="relative overflow-hidden bg-gradient-to-br from-amber-500 to-red-600 text-white">
+  <div class="relative bg-gradient-to-br from-amber-500 to-red-600 text-white">
     <div class="absolute inset-0 bg-grid-white/[0.1] bg-[size:60px_60px]"></div>
     <div class="container mx-auto px-4 py-24">
-      <h1 class="text-5xl md:text-7xl font-bold mb-6">Security Blog</h1>
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">Blog</h1>
       <p class="text-xl md:text-2xl text-amber-100 max-w-2xl">
-        Exploring cybersecurity through tutorials, news, and daily updates.
+        Exploring cybersecurity through tutorials, news, and daily updates
       </p>
     </div>
     <div class="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-gray-50 dark:from-gray-900 to-transparent"></div>
   </div>
 
   <main class="container mx-auto px-4 py-12">
+    <!-- Category Filter -->
+    <div class="flex gap-4 mb-8 overflow-x-auto pb-4">
+      {categories.map(category => (
+        <button
+          class="category-btn px-4 py-2 rounded-full border-2 border-gray-200 dark:border-gray-700 hover:border-amber-500 transition-all whitespace-nowrap"
+          data-category={category}
+        >
+          {category}
+        </button>
+      ))}
+    </div>
+
     <!-- Blog Posts Grid -->
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       {sortedPosts.map(post => (
-        <article class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+        <article 
+          class="blog-post bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all"
+          data-category={post.data.category}
+        >
           <a href={`/blog/${post.slug}`} class="block p-6">
-            <div class="flex items-center gap-3 mb-4">
+            <div class="flex items-center gap-2 mb-4">
               <span class="text-sm px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 rounded-full">
                 {post.data.category}
               </span>
-              <time class="text-sm text-gray-500">
+              <time class="text-sm text-gray-500" datetime={post.data.date.toISOString()}>
                 {new Date(post.data.date).toLocaleDateString()}
               </time>
             </div>
-            <h2 class="text-xl font-bold mb-2 hover:text-amber-500 transition-colors">
+            <h2 class="text-xl font-bold mb-3 hover:text-amber-500 transition-colors">
               {post.data.title}
             </h2>
-            <p class="text-gray-600 dark:text-gray-400 line-clamp-2">
+            <p class="text-gray-600 dark:text-gray-400 line-clamp-3">
               {post.data.description}
             </p>
           </a>
         </article>
       ))}
     </div>
+
+    {sortedPosts.length === 0 && (
+      <div class="text-center py-12">
+        <p class="text-gray-600 dark:text-gray-400">No blog posts found.</p>
+      </div>
+    )}
   </main>
 </BaseLayout>
+
+<script>
+  const categoryBtns = document.querySelectorAll('.category-btn');
+  const posts = document.querySelectorAll('.blog-post');
+
+  categoryBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const category = btn.getAttribute('data-category');
+      
+      categoryBtns.forEach(b => b.classList.remove('border-amber-500'));
+      btn.classList.add('border-amber-500');
+
+      posts.forEach(post => {
+        if (category === 'All' || post.getAttribute('data-category') === category) {
+          post.style.display = 'block';
+        } else {
+          post.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
