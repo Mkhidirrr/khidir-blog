@@ -2,7 +2,7 @@
 ---
 
 <div id="page-transition" class="fixed inset-0 z-[9999] pointer-events-none">
-  <div class="absolute inset-0 bg-white dark:bg-gray-900 transform transition-transform duration-700 ease-in-out">
+  <div class="absolute inset-0 transform transition-transform duration-700 ease-in-out bg-inherit">
     <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-20 dark:opacity-10"></div>
   </div>
 </div>
@@ -32,6 +32,12 @@
         isTransitioning = false;
       }
     }, 300);
+  });
+
+  // Preserve theme during transitions
+  document.addEventListener('astro:after-swap', () => {
+    const theme = localStorage.getItem('theme') ?? 'light';
+    document.documentElement.classList.toggle('dark', theme === 'dark');
   });
 </script>
 
