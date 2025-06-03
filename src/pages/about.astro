@@ -35,21 +35,20 @@ const certifications = [
 ---
 
 <BaseLayout title="About Me | KhidirID">
-  <div class="relative bg-gradient-to-br from-amber-500 to-red-600 text-white">
+  <div class="relative bg-gradient-to-br from-blue-600 to-purple-600 text-white">
     <div class="absolute inset-0 bg-grid-white/[0.1] bg-[size:60px_60px]"></div>
     <div class="container mx-auto px-4 py-24 relative z-10">
       <div class="flex flex-col md:flex-row items-center gap-8">
-        <div class="w-32 h-32 rounded-full overflow-hidden ring-4 ring-white/20 bg-amber-900/20">
+        <div class="w-32 h-32 rounded-full overflow-hidden ring-4 ring-white/20">
           <img 
-            src="/images/profile/avatar.png" 
+            src="/images/profile/avatar.png"
             alt="KhidirID"
-            class="w-full h-full object-cover transform hover:scale-105 transition-transform"
-            onerror="this.src='https://i.pinimg.com/564x/6e/19/81/6e1981d5f6818aab34518b9b5d214220.jpg'; this.onerror=null;"
+            class="w-full h-full object-cover"
           />
         </div>
         <div>
           <h1 class="text-4xl md:text-5xl font-bold mb-4">KhidirID</h1>
-          <p class="text-xl text-amber-100 max-w-2xl">
+          <p class="text-xl text-blue-100 max-w-2xl">
             Security Researcher & CTF Player focused on cloud security and ethical hacking.
           </p>
         </div>
@@ -87,7 +86,7 @@ const certifications = [
               <ul class="space-y-2">
                 {items.map(item => (
                   <li class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
+                    <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
                     {item}
                   </li>
                 ))}
@@ -105,7 +104,7 @@ const certifications = [
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
               <h3 class="text-lg font-semibold mb-2">{cert.name}</h3>
               <div class="flex justify-between text-sm">
-                <span class="text-amber-500">{cert.progress}</span>
+                <span class="text-blue-500">{cert.progress}</span>
                 <span class="text-gray-500">Target: {cert.target}</span>
               </div>
             </div>

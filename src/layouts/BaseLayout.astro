@@ -8,7 +8,7 @@ const { title, description = "Personal blog about Cybersecurity, CTF writeups, a
 const currentPath = Astro.url.pathname;
 ---
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -58,6 +58,13 @@ const currentPath = Astro.url.pathname;
     <link rel="icon" type="image/webp" href="/images/profile/avatar.webp">
     <link rel="icon" type="image/png" href="/images/profile/avatar.png" />
     <link rel="apple-touch-icon" href="/images/profile/avatar.png" />
+    <style is:global>
+      :root {
+        --primary: theme('colors.blue.500');
+        --primary-dark: theme('colors.blue.600');
+        --accent: theme('colors.purple.500');
+      }
+    </style>
   </head>
   <body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 min-h-screen font-sans">
     <div class="relative">

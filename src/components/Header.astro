@@ -8,10 +8,10 @@ const navItems = [
 ];
 ---
 
-<header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
   <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
     <a href="/" class="flex items-center gap-2 group">
-      <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden ring-2 ring-amber-500/50 group-hover:ring-amber-500 transition-all">
+      <div class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-blue-500/50 group-hover:ring-blue-500 transition-all">
         <img 
           src="/images/profile/avatar.png" 
           alt="KhidirID"
@@ -19,22 +19,22 @@ const navItems = [
           height="40"
           loading="eager"
           decoding="async"
-          class="w-full h-full object-cover transform hover:scale-105 transition-transform debug-image"
+          class="w-full h-full object-cover transform hover:scale-105 transition-transform"
         />
       </div>
-      <span class="text-lg sm:text-xl font-bold bg-gradient-to-r from-amber-500 to-red-600 bg-clip-text text-transparent">
+      <span class="text-xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
         KhidirID
       </span>
     </a>
     
-    <div class="flex items-center gap-3 sm:gap-6">
+    <div class="flex items-center gap-6">
       {navItems.map(item => (
         <div class="relative group">
           <a 
             href={item.path} 
             class:list={[
-              "text-sm sm:text-base hover:text-amber-500 transition-colors",
-              { "text-amber-500": currentPath?.startsWith(item.path) }
+              "px-2 py-1 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-500 transition-colors",
+              { "text-blue-500 bg-blue-50 dark:bg-blue-900/20": currentPath?.startsWith(item.path) }
             ]}
           >
             {item.title}
@@ -42,7 +42,10 @@ const navItems = [
         </div>
       ))}
       
-      <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+      <button 
+        id="theme-toggle" 
+        class="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-500 transition-colors"
+      >
         🌗
       </button>
     </div>
@@ -71,13 +74,5 @@ const navItems = [
   img {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
-  }
-  
-  .debug-image {
-    outline: 1px solid red;
-  }
-  
-  .debug-image[src=""] {
-    background: yellow;
   }
 </style>
