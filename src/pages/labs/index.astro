@@ -1,0 +1,140 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const labs = await getCollection('labs', ({ data }) => !data.draft);
+const platforms = [...new Set(labs.map(lab => lab.data.platform))];
+const sortedLabs = labs.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Security Labs | KhidirID">
+  <!-- Hero Section -->
+  <div class="relative bg-gradient-to-br from-amber-500 to-red-600 text-white">
+    <div class="absolute inset-0 bg-grid-white/[0.1] bg-[size:60px_60px]"></div>
+    <div class="container mx-auto px-4 py-24">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in" style="--animation-delay: 200ms">
+        Security Labs
+      </h1>
+      <p class="text-xl md:text-2xl text-amber-100 max-w-2xl animate-fade-in" style="--animation-delay: 400ms">
+        Hands-on cloud security labs and infrastructure testing
+      </p>
+    </div>
+    <div class="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-gray-50 dark:from-gray-900 to-transparent"></div>
+  </div>
+
+  <main class="container mx-auto px-4 py-12">
+    <!-- Search Bar -->
+    <div class="max-w-2xl mx-auto mb-8 animate-fade-in" style="--animation-delay: 600ms">
+      <input 
+        type="search" 
+        id="labs-search"
+        placeholder="Search labs by name, platform, or topic..."
+        class="w-full px-4 py-3 rounded-lg border dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-amber-500"
+      />
+    </div>
+
+    <!-- Platform Filter -->
+    <div class="flex gap-4 mb-8 overflow-x-auto pb-4 animate-fade-in" style="--animation-delay: 800ms">
+      <button
+        class="platform-btn px-4 py-2 rounded-full border-2 border-gray-200 dark:border-gray-700 hover:border-amber-500 transition-all whitespace-nowrap active"
+        data-platform="all"
+      >
+        All Platforms
+      </button>
+      {platforms.map(platform => (
+        <button
+          class="platform-btn px-4 py-2 rounded-full border-2 border-gray-200 dark:border-gray-700 hover:border-amber-500 transition-all whitespace-nowrap"
+          data-platform={platform}
+        >
+          {platform}
+        </button>
+      ))}
+    </div>
+
+    <!-- Labs Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {sortedLabs.map((lab, index) => (
+        <article 
+          class="lab-card bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 animate-fade-in"
+          data-platform={lab.data.platform}
+          data-title={lab.data.title.toLowerCase()}
+          data-tags={lab.data.tags.join(' ').toLowerCase()}
+          style={`--animation-delay: ${1000 + index * 100}ms`}
+        >
+          <a href={`/labs/${lab.slug}`} class="block p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-sm px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 rounded-full">
+                {lab.data.platform}
+              </span>
+              <span class="text-sm px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">
+                {lab.data.difficulty}
+              </span>
+            </div>
+            <h2 class="text-xl font-bold mb-3 group-hover:text-amber-500 transition-colors">
+              {lab.data.title}
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400 line-clamp-3">
+              {lab.data.description}
+            </p>
+            <div class="flex flex-wrap gap-2 mt-4">
+              {lab.data.tags.map(tag => (
+                <span class="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+    animation-delay: var(--animation-delay, 0ms);
+  }
+</style>
+
+<script>
+  // Platform filter and search functionality
+  const platformBtns = document.querySelectorAll('.platform-btn');
+  const cards = document.querySelectorAll('.lab-card');
+  const searchInput = document.getElementById('labs-search');
+
+  function filterCards() {
+    const searchTerm = (searchInput as HTMLInputElement)?.value.toLowerCase() || '';
+    const activePlatform = document.querySelector('.platform-btn.active')?.getAttribute('data-platform') || 'all';
+
+    cards.forEach(card => {
+      const platform = card.getAttribute('data-platform');
+      const title = card.getAttribute('data-title') || '';
+      const tags = card.getAttribute('data-tags') || '';
+      const matchesSearch = title.includes(searchTerm) || tags.includes(searchTerm);
+      const matchesPlatform = activePlatform === 'all' || platform === activePlatform;
+
+      if (matchesSearch && matchesPlatform) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  }
+
+  platformBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      platformBtns.forEach(b => b.classList.remove('active', 'border-amber-500'));
+      btn.classList.add('active', 'border-amber-500');
+      filterCards();
+    });
+  });
+
+  searchInput?.addEventListener('input', filterCards);
+</script>

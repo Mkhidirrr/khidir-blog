@@ -1,26 +1,8 @@
 ---
 const { currentPath } = Astro.props;
 const navItems = [
-  { 
-    title: 'CTF', 
-    path: '/ctf',
-    subitems: [
-      { title: 'HTB', path: '/ctf/htb' },
-      { title: 'THM', path: '/ctf/thm' },
-      { title: 'PicoCTF', path: '/ctf/picoctf' },
-      { title: 'OverTheWire', path: '/ctf/overthewire' },
-      { title: 'RootMe', path: '/ctf/rootme' },
-    ]
-  },
-  { 
-    title: 'Labs', 
-    path: '/labs',
-    subitems: [
-      { title: 'AWS', path: '/labs/aws' },
-      { title: 'Azure', path: '/labs/azure' },
-      { title: 'GCP', path: '/labs/gcp' },
-    ]
-  },
+  { title: 'CTF', path: '/ctf' },
+  { title: 'Labs', path: '/labs' },
   { title: 'Blog', path: '/blog' },
   { title: 'About', path: '/about' }
 ];
