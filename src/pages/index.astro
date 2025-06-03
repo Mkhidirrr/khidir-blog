@@ -14,7 +14,7 @@ const stats = {
 
 <BaseLayout title="KhidirID - Security Researcher">
   <!-- Hero Section -->
-  <div class="relative min-h-[90vh] flex items-center justify-center bg-gradient-to-br from-amber-500 to-red-600 text-white overflow-hidden">
+  <div class="relative min-h-[90vh] flex items-center justify-center bg-gradient-to-br from-blue-600 to-purple-600 text-white overflow-hidden">
     <div class="absolute inset-0 bg-grid-white/[0.1] bg-[size:60px_60px] animate-[grid_20s_linear_infinite]"></div>
     <div class="container mx-auto px-4 text-center relative z-10">
       <h1 
@@ -22,12 +22,12 @@ const stats = {
         style="--animation-delay: 200ms"
       >
         Security Through
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-white to-amber-200">
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
           Knowledge Sharing
         </span>
       </h1>
       <p 
-        class="text-xl md:text-2xl text-amber-100 max-w-2xl mx-auto mb-8 animate-fade-in"
+        class="text-xl md:text-2xl text-blue-100 max-w-2xl mx-auto mb-8 animate-fade-in"
         style="--animation-delay: 400ms"
       >
         Exploring cybersecurity through CTF writeups, labs, and practical guides
@@ -36,10 +36,10 @@ const stats = {
         class="flex flex-wrap justify-center gap-4 animate-fade-in"
         style="--animation-delay: 600ms"
       >
-        <a href="/ctf" class="px-6 py-3 bg-white text-amber-600 rounded-lg font-medium hover:bg-amber-50 transition-colors">
+        <a href="/ctf" class="px-6 py-3 bg-white text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors">
           View CTF Writeups
         </a>
-        <a href="/blog" class="px-6 py-3 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-500 transition-colors">
+        <a href="/blog" class="px-6 py-3 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-400 transition-colors">
           Read Blog
         </a>
       </div>
@@ -53,7 +53,7 @@ const stats = {
       <div class="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
         {Object.entries(stats).map(([key, value]) => (
           <div class="text-center animate-fade-in-up">
-            <div class="text-4xl font-bold text-amber-500 mb-2">{value}</div>
+            <div class="text-4xl font-bold text-blue-500 mb-2">{value}</div>
             <div class="text-gray-600 dark:text-gray-400 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
           </div>
         ))}
@@ -73,14 +73,14 @@ const stats = {
           >
             <a href={`/${content.collection}/${content.slug}`} class="block p-6">
               <div class="flex items-center gap-3 mb-4">
-                <span class="text-sm px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 rounded-full">
+                <span class="text-sm px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded-full">
                   {content.data.category}
                 </span>
                 <time class="text-sm text-gray-500">
                   {new Date(content.data.date).toLocaleDateString()}
                 </time>
               </div>
-              <h3 class="text-xl font-bold mb-2 hover:text-amber-500 transition-colors">
+              <h3 class="text-xl font-bold mb-2 hover:text-blue-500 transition-colors">
                 {content.data.title}
               </h3>
               <p class="text-gray-600 dark:text-gray-400 line-clamp-2">
