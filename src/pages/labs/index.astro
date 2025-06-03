@@ -9,13 +9,13 @@ const sortedLabs = labs.sort((a, b) => b.data.date.valueOf() - a.data.date.value
 
 <BaseLayout title="Security Labs | KhidirID">
   <!-- Hero Section -->
-  <div class="relative bg-gradient-to-br from-amber-500 to-red-600 text-white">
+  <div class="relative bg-gradient-to-br from-blue-600 to-purple-600 text-white overflow-hidden">
     <div class="absolute inset-0 bg-grid-white/[0.1] bg-[size:60px_60px]"></div>
     <div class="container mx-auto px-4 py-24">
       <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in" style="--animation-delay: 200ms">
         Security Labs
       </h1>
-      <p class="text-xl md:text-2xl text-amber-100 max-w-2xl animate-fade-in" style="--animation-delay: 400ms">
+      <p class="text-xl md:text-2xl text-blue-100 max-w-2xl animate-fade-in" style="--animation-delay: 400ms">
         Hands-on cloud security labs and infrastructure testing
       </p>
     </div>
@@ -34,16 +34,16 @@ const sortedLabs = labs.sort((a, b) => b.data.date.valueOf() - a.data.date.value
     </div>
 
     <!-- Platform Filter -->
-    <div class="flex gap-4 mb-8 overflow-x-auto pb-4 animate-fade-in" style="--animation-delay: 800ms">
+    <div class="flex gap-4 mb-8 overflow-x-auto pb-4">
       <button
-        class="platform-btn px-4 py-2 rounded-full border-2 border-gray-200 dark:border-gray-700 hover:border-amber-500 transition-all whitespace-nowrap active"
+        class="platform-btn px-4 py-2 rounded-full border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 transition-all whitespace-nowrap active"
         data-platform="all"
       >
         All Platforms
       </button>
       {platforms.map(platform => (
         <button
-          class="platform-btn px-4 py-2 rounded-full border-2 border-gray-200 dark:border-gray-700 hover:border-amber-500 transition-all whitespace-nowrap"
+          class="platform-btn px-4 py-2 rounded-full border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 transition-all whitespace-nowrap"
           data-platform={platform}
         >
           {platform}
@@ -63,7 +63,7 @@ const sortedLabs = labs.sort((a, b) => b.data.date.valueOf() - a.data.date.value
         >
           <a href={`/labs/${lab.slug}`} class="block p-6">
             <div class="flex items-center gap-3 mb-4">
-              <span class="text-sm px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 rounded-full">
+              <span class="text-sm px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded-full">
                 {lab.data.platform}
               </span>
               <span class="text-sm px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">
