@@ -31,7 +31,8 @@ const paginatedPosts = sortedPosts.slice(0, postsPerPage);
   </div>
 
   <main class="container mx-auto px-4 py-12">
-    <div class="flex flex-col sm:flex-row gap-4 mb-8">
+    <!-- Search and Filter -->
+    <div class="flex flex-col sm:flex-row gap-4 mb-8 animate-fade-in" style="--animation-delay: 600ms">
       <input
         type="search"
         placeholder="Search posts..."
@@ -49,11 +50,11 @@ const paginatedPosts = sortedPosts.slice(0, postsPerPage);
       </div>
     </div>
 
-    <!-- Posts Grid with Animation -->
+    <!-- Posts Grid -->
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {paginatedPosts.map((post, index) => (
         <article 
-          class="bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 animate-fade-in"
+          class="bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 animate-fade-in group"
           style={`--animation-delay: ${800 + index * 100}ms`}
         >
           <a href={`/blog/${post.slug}`} class="block p-6">
@@ -81,7 +82,9 @@ const paginatedPosts = sortedPosts.slice(0, postsPerPage);
           <button
             class:list={[
               "px-4 py-2 rounded-lg transition-colors",
-              i + 1 === currentPage ? "bg-amber-500 text-white" : "bg-gray-100 dark:bg-gray-800"
+              i + 1 === currentPage 
+                ? "bg-blue-500 text-white hover:bg-blue-600" 
+                : "bg-gray-100 dark:bg-gray-800 hover:bg-blue-100 dark:hover:bg-blue-900/20"
             ]}
           >
             {i + 1}
