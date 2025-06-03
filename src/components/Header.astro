@@ -29,15 +29,16 @@ const navItems = [
 <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
   <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
     <a href="/" class="flex items-center gap-2 group">
-      <div class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-blue-500/50 group-hover:ring-blue-500 transition-all">
+      <div class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-blue-500/50 group-hover:ring-blue-500 transition-all bg-gray-100 dark:bg-gray-800">
         <img 
-          src="/images/profile/avatar.jpg" 
+          src="https://i.pinimg.com/564x/c6/0f/28/c60f282888939d01f1528666cb8c1566.jpg" 
           alt="KhidirID"
           width="40"
           height="40"
           loading="eager"
           decoding="async"
           class="w-full h-full object-cover transform hover:scale-105 transition-transform"
+          onerror="this.onerror=null; this.classList.add('hidden'); this.parentElement.innerHTML += '👤';"
         />
       </div>
       <span class="text-xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
