@@ -22,6 +22,7 @@ const ctfCollection = defineCollection({
 });
 
 const blogCollection = defineCollection({
+  type: 'content',
   schema: z.object({
     title: z.string(),
     category: z.enum(['Daily', 'Security News', 'Tutorials', 'Tools Review']),
@@ -29,10 +30,7 @@ const blogCollection = defineCollection({
     tags: z.array(z.string()),
     draft: z.boolean().default(false),
     description: z.string(),
-    images: z.array(z.string()).optional(),
-    coverImage: z.string().optional(),
-  }),
-  type: 'content',
+  })
 });
 
 const docsCollection = defineCollection({
