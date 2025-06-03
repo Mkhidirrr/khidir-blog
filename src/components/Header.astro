@@ -11,7 +11,7 @@ const navItems = [
 <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
   <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
     <a href="/" class="flex items-center gap-2 group">
-      <div class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-amber-500/50 group-hover:ring-amber-500 transition-all">
+      <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden ring-2 ring-amber-500/50 group-hover:ring-amber-500 transition-all">
         <img 
           src="/images/profile/avatar.png" 
           alt="KhidirID"
@@ -22,38 +22,23 @@ const navItems = [
           class="w-full h-full object-cover transform hover:scale-105 transition-transform debug-image"
         />
       </div>
-      <span class="text-xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+      <span class="text-lg sm:text-xl font-bold bg-gradient-to-r from-amber-500 to-red-600 bg-clip-text text-transparent">
         KhidirID
       </span>
     </a>
     
-    <div class="flex items-center gap-6">
+    <div class="flex items-center gap-3 sm:gap-6">
       {navItems.map(item => (
         <div class="relative group">
           <a 
             href={item.path} 
             class:list={[
-              "hover:text-blue-500 transition-colors",
-              { "text-blue-500": currentPath?.startsWith(item.path) }
+              "text-sm sm:text-base hover:text-amber-500 transition-colors",
+              { "text-amber-500": currentPath?.startsWith(item.path) }
             ]}
           >
             {item.title}
           </a>
-          
-          {item.subitems && (
-            <div class="absolute hidden group-hover:block w-48 pt-2">
-              <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border dark:border-gray-700">
-                {item.subitems.map(subitem => (
-                  <a 
-                    href={subitem.path}
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >
-                    {subitem.title}
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       ))}
       

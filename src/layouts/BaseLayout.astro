@@ -11,7 +11,7 @@ const currentPath = Astro.url.pathname;
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>{title} | KhidirID</title>
     
     <!-- SEO -->
@@ -76,3 +76,16 @@ const currentPath = Astro.url.pathname;
     <Analytics />
   </body>
 </html>
+
+<style is:global>
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+    }
+  }
+
+  .container {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+</style>
