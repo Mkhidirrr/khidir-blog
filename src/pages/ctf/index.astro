@@ -12,8 +12,10 @@ const sortedCTFs = ctfs.sort((a, b) => b.data.date.valueOf() - a.data.date.value
   <div class="relative bg-gradient-to-br from-amber-500 to-red-600 text-white">
     <div class="absolute inset-0 bg-grid-white/[0.1] bg-[size:60px_60px]"></div>
     <div class="container mx-auto px-4 py-24">
-      <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">CTF Writeups</h1>
-      <p class="text-xl md:text-2xl text-amber-100 max-w-2xl">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in" style="--animation-delay: 200ms">
+        CTF Writeups
+      </h1>
+      <p class="text-xl md:text-2xl text-amber-100 max-w-2xl animate-fade-in" style="--animation-delay: 400ms">
         Exploring and documenting various CTF challenges and solutions
       </p>
     </div>
@@ -22,7 +24,7 @@ const sortedCTFs = ctfs.sort((a, b) => b.data.date.valueOf() - a.data.date.value
 
   <main class="container mx-auto px-4 py-12">
     <!-- Search Bar -->
-    <div class="max-w-2xl mx-auto mb-8">
+    <div class="max-w-2xl mx-auto mb-8 animate-fade-in" style="--animation-delay: 600ms">
       <input 
         type="search" 
         id="ctf-search"
@@ -32,7 +34,7 @@ const sortedCTFs = ctfs.sort((a, b) => b.data.date.valueOf() - a.data.date.value
     </div>
 
     <!-- Platform Filter -->
-    <div class="flex gap-4 mb-8 overflow-x-auto pb-4">
+    <div class="flex gap-4 mb-8 overflow-x-auto pb-4 animate-fade-in" style="--animation-delay: 800ms">
       <button
         class="platform-btn px-4 py-2 rounded-full border-2 border-gray-200 dark:border-gray-700 hover:border-amber-500 transition-all whitespace-nowrap"
         data-platform="all"
@@ -51,12 +53,13 @@ const sortedCTFs = ctfs.sort((a, b) => b.data.date.valueOf() - a.data.date.value
 
     <!-- CTF Grid -->
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {sortedCTFs.map(ctf => (
+      {sortedCTFs.map((ctf, index) => (
         <article 
-          class="ctf-card bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+          class="ctf-card bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 animate-fade-in"
           data-platform={ctf.data.platform}
           data-title={ctf.data.title.toLowerCase()}
           data-tags={ctf.data.tags.join(' ').toLowerCase()}
+          style={`--animation-delay: ${1000 + index * 100}ms`}
         >
           <a href={`/ctf/${ctf.slug}`} class="block p-6">
             <div class="flex items-center gap-3 mb-4">
@@ -86,6 +89,19 @@ const sortedCTFs = ctfs.sort((a, b) => b.data.date.valueOf() - a.data.date.value
     </div>
   </main>
 </BaseLayout>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+    animation-delay: var(--animation-delay, 0ms);
+  }
+</style>
 
 <script>
   // Platform filter functionality
