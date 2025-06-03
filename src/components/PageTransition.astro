@@ -1,0 +1,35 @@
+---
+---
+
+<div id="page-transition" class="fixed inset-0 z-[9999] pointer-events-none">
+  <div class="absolute inset-0 bg-gray-50 dark:bg-gray-900 transform -translate-y-full transition-transform duration-500 ease-in-out"></div>
+  <div class="absolute inset-0 bg-gray-50 dark:bg-gray-900 transform translate-y-full transition-transform duration-500 ease-in-out"></div>
+</div>
+
+<script>
+  document.addEventListener('astro:before-preparation', () => {
+    const transition = document.getElementById('page-transition');
+    if (transition) {
+      transition.classList.add('transitioning');
+      transition.children[0].classList.remove('-translate-y-full');
+      transition.children[1].classList.remove('translate-y-full');
+    }
+  });
+
+  document.addEventListener('astro:after-preparation', () => {
+    const transition = document.getElementById('page-transition');
+    if (transition) {
+      setTimeout(() => {
+        transition.children[0].classList.add('-translate-y-full');
+        transition.children[1].classList.add('translate-y-full');
+        transition.classList.remove('transitioning');
+      }, 500);
+    }
+  });
+</script>
+
+<style>
+  .transitioning {
+    pointer-events: auto;
+  }
+</style>
