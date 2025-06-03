@@ -3,21 +3,26 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
-const categories = ['All', 'Daily', 'Security News', 'Tutorials', 'Tools Review'];
-
-// Sort by date
+const categories = [...new Set(posts.map(post => post.data.category))];
 const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <BaseLayout title="Blog | KhidirID">
   <!-- Hero Section -->
-  <div class="relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 text-white">
-    <div class="container mx-auto px-4 py-24">
-      <h1 class="text-5xl md:text-6xl font-bold mb-6 font-display">
-        Security Insights & Stories
+  <div class="relative overflow-hidden bg-gradient-to-br from-amber-500 to-red-600 text-white">
+    <div class="absolute inset-0 bg-grid-white/[0.1] bg-[size:60px_60px]"></div>
+    <div class="container mx-auto px-4 py-24 relative z-10">
+      <h1 
+        class="text-5xl md:text-7xl font-bold mb-6 font-display animate-fade-in"
+        style="--animation-delay: 200ms"
+      >
+        Security Blog
       </h1>
-      <p class="text-xl md:text-2xl text-blue-100 max-w-2xl">
-        Exploring cybersecurity through personal experiences, tutorials, and analysis.
+      <p 
+        class="text-xl md:text-2xl text-amber-100 max-w-2xl animate-fade-in"
+        style="--animation-delay: 400ms"
+      >
+        Deep dives into cybersecurity, CTF writeups, and cloud security insights.
       </p>
     </div>
     <div class="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-gray-50 dark:from-gray-900 to-transparent"></div>
@@ -25,10 +30,16 @@ const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.val
 
   <main class="container mx-auto px-4 py-12">
     <!-- Category Filter -->
-    <div class="flex gap-4 mb-12 overflow-x-auto pb-2">
+    <div class="flex gap-4 mb-12 overflow-x-auto pb-2 animate-fade-in" style="--animation-delay: 600ms">
+      <button
+        class="category-btn px-6 py-3 rounded-full border-2 border-gray-200 dark:border-gray-700 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-all font-medium"
+        data-category="all"
+      >
+        All Posts
+      </button>
       {categories.map(category => (
         <button
-          class="category-btn px-6 py-3 rounded-full border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-400 transition-colors font-medium"
+          class="category-btn px-6 py-3 rounded-full border-2 border-gray-200 dark:border-gray-700 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-all font-medium whitespace-nowrap"
           data-category={category}
         >
           {category}
@@ -38,17 +49,18 @@ const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.val
 
     <!-- Blog Posts Grid -->
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {sortedPosts.map(post => (
+      {sortedPosts.map((post, index) => (
         <article 
-          class="blog-post group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300"
+          class="blog-post group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 animate-fade-in"
           data-category={post.data.category}
+          style={`--animation-delay: ${800 + index * 100}ms`}
         >
-          <div class="p-6">
+          <a href={`/blog/${post.slug}`} class="block p-6">
             <div class="flex items-center gap-3 mb-4">
-              <span class="text-sm px-3 py-1 bg-blue-100 dark:bg-blue-900 rounded-full font-medium">
+              <span class="text-sm px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 rounded-full font-medium">
                 {post.data.category}
               </span>
-              <time class="text-sm text-gray-500">
+              <time class="text-sm text-gray-500" datetime={post.data.date.toISOString()}>
                 {new Date(post.data.date).toLocaleDateString('en-US', {
                   month: 'short',
                   day: 'numeric',
@@ -56,22 +68,13 @@ const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.val
                 })}
               </time>
             </div>
-            <h2 class="text-xl font-bold mb-3 group-hover:text-blue-500 transition-colors">
+            <h2 class="text-xl font-bold mb-3 group-hover:text-amber-500 transition-colors">
               {post.data.title}
             </h2>
-            <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+            <p class="text-gray-600 dark:text-gray-400 line-clamp-3">
               {post.data.description}
             </p>
-            <a 
-              href={`/blog/${post.slug}`} 
-              class="inline-flex items-center text-blue-500 font-medium group-hover:text-blue-400"
-            >
-              Read more 
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
+          </a>
         </article>
       ))}
     </div>
@@ -79,19 +82,34 @@ const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.val
 </BaseLayout>
 
 <style>
-  .animate-blob {
-    animation: blob-bounce 7s infinite;
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
-  .animation-delay-2000 {
-    animation-delay: 2s;
-  }
-  .animation-delay-4000 {
-    animation-delay: 4s;
-  }
-  @keyframes blob-bounce {
-    0% { transform: translate(0px, 0px) scale(1); }
-    33% { transform: translate(30px, -50px) scale(1.1); }
-    66% { transform: translate(-20px, 20px) scale(0.9); }
-    100% { transform: translate(0px, 0px) scale(1); }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
   }
 </style>
+
+<script>
+  const categoryBtns = document.querySelectorAll('.category-btn');
+  const posts = document.querySelectorAll('.blog-post');
+
+  categoryBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const category = btn.getAttribute('data-category');
+      
+      categoryBtns.forEach(b => b.classList.remove('border-blue-500'));
+      btn.classList.add('border-blue-500');
+
+      posts.forEach(post => {
+        if (category === 'all' || post.getAttribute('data-category') === category) {
+          post.style.display = 'block';
+        } else {
+          post.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
