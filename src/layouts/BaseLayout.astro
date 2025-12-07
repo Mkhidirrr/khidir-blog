@@ -4,65 +4,88 @@ import Footer from '../components/Footer.astro';
 import PageTransition from '../components/PageTransition.astro';
 import Analytics from '../components/Analytics.astro';
 import '../styles/animations.css';
-const { title, description = "Personal blog about Cybersecurity, CTF writeups, and cloud security labs" } = Astro.props;
-const currentPath = Astro.url.pathname;
+
+const site = Astro.site || 'https://khidir-blog.vercel.app';
+
+// Props (you can override `image` per-page)
+const {
+  title,
+  description = "Personal blog about Cybersecurity, CTF Writeups, and Cloud Security Labs",
+  image = '/images/profile/avatar.png'
+} = Astro.props;
+
+const currentPath = Astro.url && Astro.url.pathname ? Astro.url.pathname : '/';
+const pageUrl = site + currentPath;
+const ogImage = image.startsWith('http') ? image : site + image;
 ---
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>{title} </title>
-    
-    <!-- SEO -->
-    <meta name="description" content={description}>
-    <meta name="author" content="KhidirID">
-    <link rel="canonical" href={Astro.url}>
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content={title}>
-    <meta property="og:description" content={description}>
-    <meta property="og:type" content="website">
-    <meta property="og:url" content={Astro.url}>
-    <meta property="og:image" content="/images/profile/avatar.png">
+    <!-- Accessibility-friendly viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:creator" content="@KhidirID">
-    <meta name="twitter:image" content="/images/profile/avatar.png">
+    <!-- Basic SEO -->
+    <meta name="description" content={description} />
+    <meta name="author" content="KhidirID" />
+    <link rel="canonical" href={pageUrl} />
+
+    <!-- Open Graph (Facebook, LinkedIn, Discord, Telegram, WhatsApp, etc.) -->
+    <meta property="og:site_name" content="KhidirID" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:image" content={ogImage} />
+    <!-- Best-effort dimensions — replace with real dims if you have them -->
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+
+    <!-- Twitter Card (fallback + enhancements) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@KhidirID" />
+    <meta name="twitter:creator" content="@KhidirID" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="Profile avatar — KhidirID" />
 
     <!-- Structured Data -->
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "KhidirID",
-        "url": "https://khidir-blog.vercel.app/",
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://khidir-blog.vercel.app/search?q={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "KhidirID",
+      "url": site,
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": `${site}/search?q={search_term_string}`,
+        "query-input": "required name=search_term_string"
       }
+    })}
     </script>
 
-    <!-- Performance Optimizations -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-    
-    <!-- PWA -->
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#3B82F6">
-    
-    <!-- Themed Favicon -->
-    <link rel="icon" type="image/png" href="/images/profile/avatar.png">
-    <link rel="icon" type="image/png" href="/images/profile/avatar.png" />
+    <!-- Fonts: preconnect + stylesheet (no bogus SRI) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+
+    <!-- PWA, theme color -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#3B82F6" />
+
+    <!-- Favicon / touch icon (relative from /public) -->
+    <link rel="icon" href="/images/profile/avatar.png" />
     <link rel="apple-touch-icon" href="/images/profile/avatar.png" />
+
     <style is:global>
       :root {
-        --primary: theme('colors.blue.500');
-        --primary-dark: theme('colors.blue.600');
-        --accent: theme('colors.purple.500');
+        --primary: #3b82f6;
+        --primary-dark: #2563eb;
+        --accent: #8b5cf6;
       }
 
       ::view-transition-old(root),
@@ -70,7 +93,7 @@ const currentPath = Astro.url.pathname;
         animation: none;
         mix-blend-mode: normal;
       }
-      
+
       .dark::view-transition-old(root),
       .dark::view-transition-new(root) {
         mix-blend-mode: normal;
@@ -82,68 +105,53 @@ const currentPath = Astro.url.pathname;
       }
 
       @media (max-width: 640px) {
-        html {
-          font-size: 14px;
-        }
+        html { font-size: 14px; }
       }
 
-      /* Tablet adjustments */
       @media (min-width: 641px) and (max-width: 1024px) {
-        .container {
-          padding-left: 2rem;
-          padding-right: 2rem;
-        }
+        .container { padding-left: 2rem; padding-right: 2rem; }
       }
     </style>
 
-    <!-- Prevent theme flash -->
+    <!-- Small, robust theme script: safe for privacy modes / scrapers -->
     <script is:inline>
-      function setTheme(theme) {
-        document.documentElement.classList.toggle('dark', theme === 'dark');
-        localStorage.setItem('theme', theme);
-        document.documentElement.style.colorScheme = theme;
-      }
-
-      // Check if theme exists in localStorage or use system preference
-      const savedTheme = localStorage.getItem('theme');
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      
-      setTheme(savedTheme || systemTheme);
-
-      // Listen for system theme changes
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (!localStorage.getItem('theme')) {
-          setTheme(e.matches ? 'dark' : 'light');
+    (function () {
+      try {
+        function setTheme(theme) {
+          document.documentElement.classList.toggle('dark', theme === 'dark');
+          try { localStorage.setItem('theme', theme); } catch (e) {}
+          document.documentElement.style.colorScheme = theme;
         }
-      });
+
+        var saved = null;
+        try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
+        var system = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+        setTheme(saved || system);
+
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').addEventListener) {
+          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+            try {
+              if (!localStorage.getItem('theme')) {
+                setTheme(e.matches ? 'dark' : 'light');
+              }
+            } catch (err) {}
+          });
+        }
+      } catch (err) {
+        /* fail silently — important for some crawlers / strict browsers */
+      }
+    })();
     </script>
 
     <style is:global>
-      :root {
-        color-scheme: light dark;
-      }
+      :root { color-scheme: light dark; }
 
-      html.transitioning * {
-        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
-      }
-
-      html {
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
-
-      html.dark * {
-        transition-duration: 0.3s;
-      }
+      html.transitioning * { transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important; }
+      html { transition: background-color 0.3s ease, color 0.3s ease; }
+      html.dark * { transition-duration: 0.3s; }
     </style>
-
-    <!-- External Resources with SRI -->
-    <link 
-      rel="stylesheet" 
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      integrity="sha384-[your-hash-here]"
-      crossorigin="anonymous"
-    />
   </head>
+
   <body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 min-h-screen font-sans">
     <div class="relative">
       <!-- Animated background elements -->
@@ -160,6 +168,15 @@ const currentPath = Astro.url.pathname;
       </main>
       <Footer />
     </div>
+
+    <!-- Analytics component (consider privacy/consent handling inside it) -->
     <Analytics />
+
+    <noscript>
+      <!-- Small fallback / note for users with JS disabled -->
+      <div style="position:fixed;bottom:0;left:0;right:0;background:#111;color:#fff;padding:6px;text-align:center;font-size:13px;">
+        Some site features require JavaScript. Please enable JS for the best experience.
+      </div>
+    </noscript>
   </body>
 </html>
