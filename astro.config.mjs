@@ -9,7 +9,6 @@ import compress from 'astro-compress';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
-import { securityHeaders } from './src/middleware/security';
 
 export default defineConfig({
   site: 'https://khidir.dev',
@@ -35,10 +34,6 @@ export default defineConfig({
               "object-src 'none'"
             ].join('; ')
           },
-          ...Object.entries(securityHeaders().headers).map(([key, value]) => ({
-            key,
-            value: typeof value === 'string' ? value : value.join(', '),
-          })),
         ],
       },
     ],
