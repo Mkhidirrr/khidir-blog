@@ -4,4 +4,4 @@ Disallow: /admin/
 Disallow: /draft/
 Allow: /
 
-Sitemap: https://khidir.dev/sitemap.xml
+Sitemap: https://khidir-blog.vercel.app/sitemap.xml
