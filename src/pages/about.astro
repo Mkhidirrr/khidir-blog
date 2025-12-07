@@ -1,36 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const skills = {
-  offensive: [
-    'Web Penetration Testing',
-    'Network Security',
-    'Vulnerability Assessment',
-    'CTF Experience'
-  ],
-  defensive: [
-    'Security Monitoring',
-    'Incident Response',
-    'Log Analysis',
-    'Threat Detection'
-  ],
-  cloud: [
-    'AWS Security',
-    'Azure Security',
-    'Cloud Architecture',
-    'Security Controls'
-  ],
-  tools: [
-    'Burp Suite',
-    'Nmap',
-    'Wireshark',
-    'Metasploit'
-  ]
-};
+const cloudSkills = [
+  'Cloud Security Architecture',
+  'AWS Security Best Practices',
+  'Identity & Access Management (IAM)',
+  'Cloud Incident Response',
+  'Cloud Compliance & Governance',
+  'DevSecOps',
+  'Threat Detection in Cloud',
+  'Container & Serverless Security'
+];
 
 const certifications = [
-  { name: 'OSCP', progress: 'In Progress', target: '2030' },
-  { name: 'AWS Security', progress: 'Planned', target: '2027' },
+  { name: 'AWS Certified Security – Specialty', status: 'Planned', target: '2027' },
+  { name: 'Azure Security Engineer Associate', status: 'Planned', target: '2028' },
+  { name: 'Google Professional Cloud Security Engineer', status: 'Planned', target: '2029' }
 ];
 ---
 
@@ -49,7 +34,7 @@ const certifications = [
         <div>
           <h1 class="text-4xl md:text-5xl font-bold mb-4">KhidirID</h1>
           <p class="text-xl text-blue-100 max-w-2xl">
-            Security Researcher & CTF Player focused on cloud security and ethical hacking.
+            Cloud Security Enthusiast & Researcher. Passionate about securing cloud-native environments and sharing knowledge through writeups and tutorials.
           </p>
         </div>
       </div>
@@ -58,56 +43,39 @@ const certifications = [
   </div>
 
   <main class="container mx-auto px-4 py-12">
-    <div class="max-w-4xl mx-auto space-y-12">
-      <!-- About Section -->
+    <div class="max-w-3xl mx-auto space-y-12">
+      <!-- Professional Summary -->
       <section>
-        <h2 class="text-2xl font-bold mb-4">About Me</h2>
+        <h2 class="text-2xl font-bold mb-4">Professional Summary</h2>
         <div class="prose dark:prose-invert">
           <p>
-            Passionate about cybersecurity with a focus on cloud security and CTF challenges. 
-            I share my knowledge and experiences through detailed writeups and tutorials.
+            I specialize in <b>cloud security</b> with hands-on experience in AWS, Azure, and Google Cloud. My focus is on designing secure architectures, implementing best practices, and responding to cloud incidents. I enjoy sharing my journey and insights through technical writeups and open-source projects.
           </p>
         </div>
       </section>
 
-      <!-- Skills Grid -->
+      <!-- Cloud Security Stack -->
       <section>
-        <h2 class="text-2xl font-bold mb-6">Skills & Expertise</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-          {Object.entries(skills).map(([category, items]) => (
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-              <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                {category === 'offensive' && '🎯'}
-                {category === 'defensive' && '🛡️'}
-                {category === 'cloud' && '☁️'}
-                {category === 'tools' && '🔧'}
-                {category.charAt(0).toUpperCase() + category.slice(1)}
-              </h3>
-              <ul class="space-y-2">
-                {items.map(item => (
-                  <li class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <h2 class="text-2xl font-bold mb-4">Cloud Security Stack</h2>
+        <ul class="flex flex-wrap gap-3">
+          {cloudSkills.map(skill => (
+            <li class="inline-flex items-center px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 rounded-full text-sm font-medium shadow-sm">
+              <svg class="w-4 h-4 mr-2 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 00-1.414 0L9 11.586 6.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l7-7a1 1 0 000-1.414z" /></svg>
+              {skill}
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
-      <!-- Certifications -->
+      <!-- Certifications & Goals -->
       <section>
-        <h2 class="text-2xl font-bold mb-6">Certifications & Goals</h2>
-        <div class="grid md:grid-cols-2 gap-6">
+        <h2 class="text-2xl font-bold mb-4">Certifications & Goals</h2>
+        <div class="flex flex-wrap gap-3">
           {certifications.map(cert => (
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-              <h3 class="text-lg font-semibold mb-2">{cert.name}</h3>
-              <div class="flex justify-between text-sm">
-                <span class="text-blue-500">{cert.progress}</span>
-                <span class="text-gray-500">Target: {cert.target}</span>
-              </div>
-            </div>
+            <span class="inline-flex items-center px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-100 rounded-full text-sm font-medium shadow-sm">
+              <svg class="w-4 h-4 mr-2 text-purple-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 01.894.553l3 6A1 1 0 0113 10h-2v4a1 1 0 11-2 0v-4H7a1 1 0 01-.894-1.447l3-6A1 1 0 0110 2z" /></svg>
+              {cert.name} <span class="ml-2 text-xs text-gray-500">({cert.status}, Target: {cert.target})</span>
+            </span>
           ))}
         </div>
       </section>
